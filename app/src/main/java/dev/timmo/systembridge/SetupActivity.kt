@@ -1,11 +1,15 @@
 package dev.timmo.systembridge
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import dev.timmo.systembridge.data.AppDatabase
 import dev.timmo.systembridge.data.Connection
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class SetupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,16 +22,24 @@ class SetupActivity : AppCompatActivity() {
                 findViewById<TextInputEditText>(R.id.editTextApiPort).text.toString().toInt()
             val apiKey = findViewById<TextInputEditText>(R.id.editTextApiKey).text.toString()
 
-            AppDatabase.getInstance(applicationContext).connectionDao().insert(
-                Connection(
-                    0,
-                    host,
-                    apiPort,
-                    apiKey
+            GlobalScope.launch(Dispatchers.IO) {
+                val connectionDao = AppDatabase.getInstance(applicationContext).connectionDao()
+                connectionDao.insert(
+                    Connection(
+                        0,
+                        host,
+                        apiPort,
+                        apiKey
+                    )
                 )
-            )
 
-            finish()
+                Log.d("SetupActivity", connectionDao.getAll().toString())
+
+                launch(Dispatchers.Main) {
+                    Log.d("SetupActivity", "finish()")
+                    finish()
+                }
+            }
         }
     }
 }
