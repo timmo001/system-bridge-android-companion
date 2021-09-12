@@ -29,11 +29,6 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<RecyclerView>(R.id.recyclerViewBridges).also { recyclerView: RecyclerView ->
             recyclerView.layoutManager = GridLayoutManager(this, 1)
 
-            connectionData = listOf(Connection(0, "test", 9170, "abc"))
-
-            bridgesAdapter = BridgesRecyclerViewAdapter(connectionData)
-            recyclerView.adapter = bridgesAdapter
-
             GlobalScope.launch(Dispatchers.IO) {
                 connectionData =
                     AppDatabase.getInstance(applicationContext).connectionDao().getAll()
@@ -42,7 +37,7 @@ class SettingsActivity : AppCompatActivity() {
 
                 launch(Dispatchers.Main) {
                     Log.d("SettingsActivity", "Set adapter")
-                    bridgesAdapter.notifyDataSetChanged()
+                    bridgesAdapter = BridgesRecyclerViewAdapter(connectionData)
                     recyclerView.adapter = bridgesAdapter
                 }
             }
@@ -53,10 +48,4 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-//    @SuppressLint("NotifyDataSetChanged")
-//    override fun onResume() {
-//        super.onResume()
-//        connectionData = AppDatabase.getInstance(applicationContext).connectionDao().getAll()
-//        bridgesAdapter.notifyDataSetChanged()
-//    }
 }
