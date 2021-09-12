@@ -10,7 +10,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 
-class OpenIn : AppCompatActivity() {
+class OpenInActivity : AppCompatActivity() {
 
     private lateinit var url: String
 

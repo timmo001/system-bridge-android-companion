@@ -27,7 +27,7 @@
             android:name=".SetupActivity"
             android:exported="true" />
         <activity
-            android:name=".OpenIn"
+            android:name=".OpenInActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:label="@string/activity_open_url"
