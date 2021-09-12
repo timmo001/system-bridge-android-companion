@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">System Bridge</string>
+    <string name="open">Open</string>
+    <string name="open_in_system_bridge">Open In System Bridge</string>
 </resources>
