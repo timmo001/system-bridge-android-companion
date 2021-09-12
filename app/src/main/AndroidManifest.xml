@@ -29,6 +29,7 @@
             android:name=".OpenIn"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:label="@string/open_url_on_bridge"
             android:theme="@style/Theme.SystemBridge.Dialog">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
