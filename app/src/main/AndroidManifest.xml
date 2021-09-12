@@ -14,7 +14,7 @@
         android:theme="@style/Theme.SystemBridge"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".WebviewActivity"
+            android:name=".SettingsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,16 +23,24 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".SetupActivity"
+            android:exported="true" />
+        <activity
             android:name=".OpenIn"
             android:excludeFromRecents="true"
             android:exported="true"
             android:theme="@style/Theme.SystemBridge.Dialog">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".WebviewActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
