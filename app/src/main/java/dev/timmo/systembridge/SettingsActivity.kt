@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.timmo.systembridge.data.AppDatabase
 import dev.timmo.systembridge.data.Connection
 import dev.timmo.systembridge.views.BridgesRecyclerViewAdapter
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+@DelicateCoroutinesApi
 @SuppressLint("NotifyDataSetChanged")
 class SettingsActivity : AppCompatActivity() {
     private lateinit var connectionData: List<Connection>

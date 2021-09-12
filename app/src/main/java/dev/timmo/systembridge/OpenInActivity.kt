@@ -12,11 +12,13 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import dev.timmo.systembridge.data.AppDatabase
 import dev.timmo.systembridge.data.Connection
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
+@DelicateCoroutinesApi
 class OpenInActivity : AppCompatActivity() {
 
     private lateinit var connectionData: List<Connection>
