@@ -14,7 +14,7 @@
         android:theme="@style/Theme.SystemBridge"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".MainActivity"
+            android:name=".WebviewActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,9 @@
         </activity>
         <activity
             android:name=".OpenIn"
-            android:exported="true">
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:theme="@style/Theme.SystemBridge.Dialog">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />

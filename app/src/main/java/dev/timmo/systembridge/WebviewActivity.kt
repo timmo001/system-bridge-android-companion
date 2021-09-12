@@ -7,13 +7,12 @@ import android.os.Bundle
 import android.util.Log
 import android.webkit.WebView
 import android.widget.Toast
-import java.util.logging.Logger
 
-class MainActivity : AppCompatActivity() {
+class WebviewActivity : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_webview)
         val webviewMain = findViewById<WebView>(R.id.webviewMain)
 
 
