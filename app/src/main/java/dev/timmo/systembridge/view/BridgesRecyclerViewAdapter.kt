@@ -1,4 +1,4 @@
-package dev.timmo.systembridge.views
+package dev.timmo.systembridge.view
 
 import android.view.LayoutInflater
 import android.view.View
