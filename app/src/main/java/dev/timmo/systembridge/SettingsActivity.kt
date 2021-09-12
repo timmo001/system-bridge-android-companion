@@ -39,7 +39,9 @@ class SettingsActivity : AppCompatActivity() {
                 Log.d("SettingsActivity", connectionData.toString())
 
                 launch(Dispatchers.Main) {
+                    Log.d("SettingsActivity", "Set adapter")
                     bridgesAdapter.notifyDataSetChanged()
+                    recyclerView.adapter = bridgesAdapter
                 }
             }
         }

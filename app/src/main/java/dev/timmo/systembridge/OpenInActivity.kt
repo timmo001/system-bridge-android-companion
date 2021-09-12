@@ -12,10 +12,14 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import dev.timmo.systembridge.data.AppDatabase
 import dev.timmo.systembridge.data.Connection
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 class OpenInActivity : AppCompatActivity() {
 
+    private lateinit var connectionData: List<Connection>
     private lateinit var url: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,22 +33,36 @@ class OpenInActivity : AppCompatActivity() {
             }
         }
 
-        val connectionData = AppDatabase.getInstance(applicationContext).connectionDao().getAll()
+        val spinnerBridge = findViewById<Spinner>(R.id.spinnerBridge)
+        val buttonOpen = findViewById<Button>(R.id.buttonOpen).also { button: Button ->
+            button.isEnabled = false
+        }
 
-        val spinner = findViewById<Spinner>(R.id.spinnerBridge)
+        val context = this
 
-        spinner.adapter =
-            ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_dropdown_item,
-                connectionData.map { connection: Connection ->
-                    connection.host
-                }
-            )
+        GlobalScope.launch(Dispatchers.IO) {
+            connectionData =
+                AppDatabase.getInstance(applicationContext).connectionDao().getAll()
 
-        findViewById<Button>(R.id.buttonOpen).setOnClickListener {
+            Log.d("SettingsActivity", connectionData.toString())
+
+            launch(Dispatchers.Main) {
+                Log.d("SettingsActivity", "Set adapter")
+                spinnerBridge.adapter =
+                    ArrayAdapter(
+                        context,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        connectionData.map { connection: Connection ->
+                            connection.host
+                        }
+                    )
+                buttonOpen.isEnabled = true
+            }
+        }
+
+        buttonOpen.setOnClickListener {
             val connection = connectionData.find { connection: Connection ->
-                connection.host == spinner.selectedItem
+                connection.host == spinnerBridge.selectedItem
             }
 
             if (connection !== null) {
