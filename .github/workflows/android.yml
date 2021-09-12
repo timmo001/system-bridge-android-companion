@@ -20,7 +20,10 @@ jobs:
     name: 🏭 Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v2.3.4
+        with:
+          ref: ${{ github.head_ref }}
       - name: 🏗 Set up JDK
         uses: actions/setup-java@v2
         with:
@@ -28,6 +31,8 @@ jobs:
           distribution: "adopt"
           cache: gradle
       - name: 🏗 Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: |
+          chmod +x gradlew
       - name: 🏭 Build with Gradle
-        run: ./gradlew build
+        run: |
+          ./gradlew build
