@@ -1,10 +1,11 @@
 <resources>
+    <string name="app_name">System Bridge</string>
+    <string name="activity_open_url">Open URL on Bridge</string>
+    <string name="activity_settings">System Bridge Settings</string>
     <string name="add_new_bridge">Add New Bridge</string>
     <string name="add">Add</string>
     <string name="api_key">API Key</string>
-    <string name="app_name">System Bridge</string>
     <string name="host">Host</string>
-    <string name="open_url_on_bridge">Open URL on Bridge</string>
     <string name="open_url">Open URL</string>
     <string name="open">Open</string>
     <string name="port">Port</string>

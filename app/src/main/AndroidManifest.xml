@@ -15,7 +15,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".SettingsActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/activity_settings">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +30,7 @@
             android:name=".OpenIn"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:label="@string/open_url_on_bridge"
+            android:label="@string/activity_open_url"
             android:theme="@style/Theme.SystemBridge.Dialog">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
