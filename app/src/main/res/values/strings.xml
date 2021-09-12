@@ -6,7 +6,9 @@
     <string name="add">Add</string>
     <string name="api_key">API Key</string>
     <string name="api_port">API Port</string>
+    <string name="bridges">Bridges</string>
     <string name="host">Host</string>
+    <string name="name">Name</string>
     <string name="open_url">Open URL</string>
     <string name="open">Open</string>
     <string name="settings">Settings</string>

@@ -1,12 +1,16 @@
 package dev.timmo.systembridge.data
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface ConnectionDao {
+
+    @Delete
+    fun delete(user: Connection)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(vararg connection: Connection)
+
     @Query("SELECT * FROM connection")
     fun getAll(): List<Connection>
 
@@ -15,11 +19,5 @@ interface ConnectionDao {
 
     @Query("SELECT * FROM connection WHERE host = :host")
     fun findByHost(host: String): Connection
-
-    @Insert
-    fun insertAll(vararg users: Connection)
-
-    @Delete
-    fun delete(user: Connection)
 
 }
