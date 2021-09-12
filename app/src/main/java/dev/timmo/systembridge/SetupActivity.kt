@@ -1,8 +1,8 @@
 package dev.timmo.systembridge
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 
 class SetupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

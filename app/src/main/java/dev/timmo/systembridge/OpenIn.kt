@@ -1,14 +1,11 @@
 package dev.timmo.systembridge
 
 import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
-import com.android.volley.Request
-import com.android.volley.Response
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
@@ -57,7 +54,6 @@ class OpenIn : AppCompatActivity() {
 
     }
 
-
     private fun handleSendText(intent: Intent) {
         intent.getStringExtra(Intent.EXTRA_TEXT)?.let { url ->
             // Update UI to reflect text being shared
@@ -65,6 +61,5 @@ class OpenIn : AppCompatActivity() {
             findViewById<TextView>(R.id.textViewUrl).text = url
         }
     }
-
 
 }
