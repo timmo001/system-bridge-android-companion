@@ -1,10 +1,6 @@
 package dev.timmo.systembridge.data
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface ConnectionDao {
@@ -14,6 +10,9 @@ interface ConnectionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg connection: Connection)
+
+    @Update()
+    fun update(vararg connection: Connection)
 
     @Query("SELECT * FROM connection")
     fun getAll(): List<Connection>
