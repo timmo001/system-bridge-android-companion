@@ -43,7 +43,7 @@ class SettingsActivity : AppCompatActivity() {
         getData()
 
         findViewById<Button>(R.id.buttonAddNewBridge).setOnClickListener {
-            startActivity(Intent(this, SetupActivity::class.java))
+            startActivity(Intent(this, EditConnectionActivity::class.java))
         }
     }
 
@@ -71,7 +71,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun onClickListener(position: Int) {
-        val intentSetupActivity = Intent(this, SetupActivity::class.java)
+        val intentSetupActivity = Intent(this, EditConnectionActivity::class.java)
         intentSetupActivity.putExtra(SETUP_EDIT, true)
         intentSetupActivity.putExtra(CONNECTION_UID, connectionData[position].uid)
         intentSetupActivity.putExtra(CONNECTION_NAME, connectionData[position].name)

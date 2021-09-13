@@ -24,10 +24,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 @DelicateCoroutinesApi
-class SetupActivity : AppCompatActivity() {
+class EditConnectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setup)
+        setContentView(R.layout.activity_edit_connection)
 
         val editTextName = findViewById<TextInputEditText>(R.id.editTextName)
         val editTextHost = findViewById<TextInputEditText>(R.id.editTextHost)
