@@ -34,32 +34,34 @@ import org.json.JSONObject
 
 @DelicateCoroutinesApi
 class EditConnectionActivity : AppCompatActivity() {
-    private lateinit var editTextNameLayout: TextInputLayout
-    private lateinit var editTextHostLayout: TextInputLayout
-    private lateinit var editTextApiPortLayout: TextInputLayout
-    private lateinit var editTextApiKeyLayout: TextInputLayout
-    private lateinit var editTextName: TextInputEditText
-    private lateinit var editTextHost: TextInputEditText
-    private lateinit var editTextApiPort: TextInputEditText
-    private lateinit var editTextApiKey: TextInputEditText
     private lateinit var buttonSave: Button
+    private lateinit var editTextApiKey: TextInputEditText
+    private lateinit var editTextApiKeyLayout: TextInputLayout
+    private lateinit var editTextApiPort: TextInputEditText
+    private lateinit var editTextApiPortLayout: TextInputLayout
+    private lateinit var editTextHost: TextInputEditText
+    private lateinit var editTextHostLayout: TextInputLayout
+    private lateinit var editTextName: TextInputEditText
+    private lateinit var editTextNameLayout: TextInputLayout
+    private lateinit var progressBarSaving: ProgressBar
+    private lateinit var textViewTestConnection: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_connection)
 
-        editTextNameLayout = findViewById(R.id.editTextNameLayout)
-        editTextHostLayout = findViewById(R.id.editTextHostLayout)
-        editTextApiPortLayout = findViewById(R.id.editTextApiPortLayout)
-        editTextApiKeyLayout = findViewById(R.id.editTextApiKeyLayout)
-        editTextName = findViewById(R.id.editTextName)
-        editTextHost = findViewById(R.id.editTextHost)
-        editTextApiPort = findViewById(R.id.editTextApiPort)
-        editTextApiKey = findViewById(R.id.editTextApiKey)
-        buttonSave = findViewById(R.id.buttonSetupBridge)
         val buttonDeleteBridge = findViewById<Button>(R.id.buttonDeleteBridge)
-        val progressBarSaving = findViewById<ProgressBar>(R.id.progressBarSaving)
-        val textViewTestConnection = findViewById<TextView>(R.id.textViewTestConnection)
+        buttonSave = findViewById(R.id.buttonSetupBridge)
+        editTextApiKey = findViewById(R.id.editTextApiKey)
+        editTextApiKeyLayout = findViewById(R.id.editTextApiKeyLayout)
+        editTextApiPort = findViewById(R.id.editTextApiPort)
+        editTextApiPortLayout = findViewById(R.id.editTextApiPortLayout)
+        editTextHost = findViewById(R.id.editTextHost)
+        editTextHostLayout = findViewById(R.id.editTextHostLayout)
+        editTextName = findViewById(R.id.editTextName)
+        editTextNameLayout = findViewById(R.id.editTextNameLayout)
+        progressBarSaving = findViewById(R.id.progressBarSaving)
+        textViewTestConnection = findViewById(R.id.textViewTestConnection)
 
         val edit = intent?.getBooleanExtra(SETUP_EDIT, false) == true
         val uid = intent?.getIntExtra(CONNECTION_UID, 0) ?: 0
@@ -93,42 +95,9 @@ class EditConnectionActivity : AppCompatActivity() {
             textViewTestConnection.setText(R.string.test_connection_in_progress)
 
             val connection = Connection(uid, name, host, apiPort, apiKey)
-
             Log.d("SetupActivity", connection.toString())
 
-            val queue = Volley.newRequestQueue(this)
-            val request = object : JsonObjectRequest(
-                Method.GET,
-                "http://${connection.host}:${connection.apiPort}/information",
-                null,
-                { response: JSONObject ->
-                    Log.d("SetupActivity", response.toString())
-
-                    textViewTestConnection.setText(R.string.test_connection_success)
-
-                    updateItem(edit, connection)
-
-                    buttonSave.visibility = VISIBLE
-                    progressBarSaving.visibility = INVISIBLE
-                },
-                { error: VolleyError ->
-                    Log.e("SetupActivity", error.toString())
-
-                    val message = "${getString(R.string.test_connection_error)}: $error"
-                    textViewTestConnection.text = message
-
-                    buttonSave.visibility = VISIBLE
-                    progressBarSaving.visibility = INVISIBLE
-                }) {
-                override fun getHeaders(): MutableMap<String, String> {
-                    val headers = HashMap<String, String>()
-                    headers["api-key"] = connection.apiKey
-                    return headers
-                }
-            }
-
-            // Add the request to the RequestQueue.
-            queue.add(request)
+            testConnection(edit, connection)
         }
 
         // Validation
@@ -164,6 +133,43 @@ class EditConnectionActivity : AppCompatActivity() {
         } else editTextApiKeyLayout.error = null
 
         buttonSave.isEnabled = saveEnabled
+    }
+
+    private fun testConnection(edit: Boolean, connection: Connection) {
+        val queue = Volley.newRequestQueue(this)
+        val request = object : JsonObjectRequest(
+            Method.GET,
+            "http://${connection.host}:${connection.apiPort}/information",
+            null,
+            { response: JSONObject ->
+                Log.d("SetupActivity", response.toString())
+
+                textViewTestConnection.setText(R.string.test_connection_success)
+
+                updateItem(edit, connection)
+
+                buttonSave.visibility = VISIBLE
+                progressBarSaving.visibility = INVISIBLE
+            },
+            { error: VolleyError ->
+                Log.e("SetupActivity", error.toString())
+
+                val message = "${getString(R.string.test_connection_error)}: $error"
+                textViewTestConnection.text = message
+
+                buttonSave.visibility = VISIBLE
+                progressBarSaving.visibility = INVISIBLE
+            }) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["api-key"] = connection.apiKey
+                return headers
+            }
+        }
+
+        // Add the request to the RequestQueue.
+        queue.add(request)
+
     }
 
     private fun deleteItem(uid: Int) {
