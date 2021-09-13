@@ -55,7 +55,7 @@ class OpenInActivity : AppCompatActivity() {
                         context,
                         android.R.layout.simple_spinner_dropdown_item,
                         connectionData.map { connection: Connection ->
-                            connection.host
+                            connection.name
                         }
                     )
                 buttonOpen.isEnabled = true
@@ -64,7 +64,7 @@ class OpenInActivity : AppCompatActivity() {
 
         buttonOpen.setOnClickListener {
             val connection = connectionData.find { connection: Connection ->
-                connection.host == spinnerBridge.selectedItem
+                connection.name == spinnerBridge.selectedItem
             }
 
             if (connection !== null) {
