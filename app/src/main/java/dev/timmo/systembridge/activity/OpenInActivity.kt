@@ -1,4 +1,4 @@
-package dev.timmo.systembridge
+package dev.timmo.systembridge.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.AppDatabase
 import dev.timmo.systembridge.data.Connection
 import kotlinx.coroutines.DelicateCoroutinesApi

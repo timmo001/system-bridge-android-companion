@@ -14,7 +14,7 @@
         android:theme="@style/Theme.SystemBridge"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:exported="true"
             android:label="@string/activity_settings">
             <intent-filter>
@@ -24,10 +24,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SetupActivity"
+            android:name=".activity.SetupActivity"
             android:exported="true" />
         <activity
-            android:name=".OpenInActivity"
+            android:name=".activity.OpenInActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:label="@string/activity_open_url"

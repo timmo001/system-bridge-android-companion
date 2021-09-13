@@ -1,4 +1,4 @@
-package dev.timmo.systembridge
+package dev.timmo.systembridge.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.AppDatabase
 import dev.timmo.systembridge.data.Connection
 import dev.timmo.systembridge.view.BridgesRecyclerViewAdapter

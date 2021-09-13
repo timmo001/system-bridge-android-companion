@@ -1,10 +1,11 @@
-package dev.timmo.systembridge
+package dev.timmo.systembridge.activity
 
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
+import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.AppDatabase
 import dev.timmo.systembridge.data.Connection
 import kotlinx.coroutines.DelicateCoroutinesApi
