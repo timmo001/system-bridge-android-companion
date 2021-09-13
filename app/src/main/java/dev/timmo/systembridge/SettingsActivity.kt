@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.timmo.systembridge.data.AppDatabase
 import dev.timmo.systembridge.data.Connection
-import dev.timmo.systembridge.views.BridgesRecyclerViewAdapter
+import dev.timmo.systembridge.view.BridgesRecyclerViewAdapter
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

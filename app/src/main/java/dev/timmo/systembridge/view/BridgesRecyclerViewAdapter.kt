@@ -1,4 +1,4 @@
-package dev.timmo.systembridge.views
+package dev.timmo.systembridge.view
 
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +29,7 @@ class BridgesRecyclerViewAdapter(private val connections: List<Connection>) :
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val connection: Connection = connections[position]
         val url = "http://${connection.host}:${connection.apiPort}"
-        viewHolder.textViewName.text = connection.host
+        viewHolder.textViewName.text = connection.name
         viewHolder.textViewHost.text = url
     }
 
