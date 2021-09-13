@@ -17,8 +17,8 @@ interface ConnectionDao {
     @Query("SELECT * FROM connection")
     fun getAll(): List<Connection>
 
-    @Query("SELECT * FROM connection WHERE uid IN (:userIds)")
-    fun loadAllByIds(userIds: IntArray): List<Connection>
+    @Query("SELECT * FROM connection WHERE name = :name")
+    fun findByName(name: String): Connection
 
     @Query("SELECT * FROM connection WHERE host = :host")
     fun findByHost(host: String): Connection
