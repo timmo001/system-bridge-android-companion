@@ -80,9 +80,7 @@ class EditConnectionActivity : AppCompatActivity() {
                 Editable.Factory.getInstance().newEditable(DEFAULT_API_PORT.toString())
         }
 
-        buttonDeleteBridge.setOnClickListener {
-            deleteItem(uid)
-        }
+        buttonDeleteBridge.setOnClickListener { deleteItem(uid) }
 
         buttonSave.setOnClickListener {
             val name = editTextName.text.toString()
@@ -104,7 +102,7 @@ class EditConnectionActivity : AppCompatActivity() {
                 "http://${connection.host}:${connection.apiPort}/information",
                 null,
                 { response: JSONObject ->
-                    Log.v("SetupActivity", response.toString())
+                    Log.d("SetupActivity", response.toString())
 
                     textViewTestConnection.setText(R.string.test_connection_success)
 
