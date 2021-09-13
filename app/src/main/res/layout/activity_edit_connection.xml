@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textCapWords"
+            android:inputType="textAutoComplete|textCapWords"
             android:singleLine="true"
             tools:ignore="TextContrastCheck" />
 
@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:importantForAutofill="no"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:singleLine="true"
             tools:ignore="TextContrastCheck" />
 
@@ -137,6 +137,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextApiKeyLayout" />
 
+    <ProgressBar
+        android:id="@+id/progressBarSaving"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextApiKeyLayout" />
+
     <Button
         android:id="@+id/buttonDeleteBridge"
         android:layout_width="0dp"
@@ -150,5 +161,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonSetupBridge" />
+
+    <TextView
+        android:id="@+id/textViewTestConnection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonDeleteBridge"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

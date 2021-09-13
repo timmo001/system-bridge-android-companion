@@ -3,11 +3,15 @@ package dev.timmo.systembridge.activity
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
-import android.view.View.GONE
+import android.view.View.*
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dev.timmo.systembridge.Constants.Companion.CONNECTION_API_KEY
@@ -24,6 +28,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 @DelicateCoroutinesApi
 class EditConnectionActivity : AppCompatActivity() {
@@ -51,6 +56,8 @@ class EditConnectionActivity : AppCompatActivity() {
         editTextApiKey = findViewById(R.id.editTextApiKey)
         buttonSave = findViewById(R.id.buttonSetupBridge)
         val buttonDeleteBridge = findViewById<Button>(R.id.buttonDeleteBridge)
+        val progressBarSaving = findViewById<ProgressBar>(R.id.progressBarSaving)
+        val textViewTestConnection = findViewById<TextView>(R.id.textViewTestConnection)
 
         val edit = intent?.getBooleanExtra(SETUP_EDIT, false) == true
         val uid = intent?.getIntExtra(CONNECTION_UID, 0) ?: 0
@@ -65,6 +72,7 @@ class EditConnectionActivity : AppCompatActivity() {
             )
             editTextApiKey.setText(intent.getStringExtra(CONNECTION_API_KEY))
         } else {
+            buttonDeleteBridge.isEnabled = false
             buttonDeleteBridge.visibility = GONE
             editTextApiPort.text =
                 Editable.Factory.getInstance().newEditable(DEFAULT_API_PORT.toString())
@@ -91,19 +99,56 @@ class EditConnectionActivity : AppCompatActivity() {
             val apiPort = editTextApiPort.text.toString().toInt()
             val apiKey = editTextApiKey.text.toString()
 
-            GlobalScope.launch(Dispatchers.IO) {
-                val connection = Connection(uid, name, host, apiPort, apiKey)
+            buttonSave.visibility = INVISIBLE
+            progressBarSaving.visibility = VISIBLE
+            textViewTestConnection.setText(R.string.test_connection_in_progress)
 
-                Log.d("SetupActivity", connection.toString())
+            val connection = Connection(uid, name, host, apiPort, apiKey)
 
-                val connectionDao = AppDatabase.getInstance(applicationContext).connectionDao()
-                if (edit) connectionDao.update(connection)
-                else connectionDao.insert(connection)
+            Log.d("SetupActivity", connection.toString())
 
-                launch(Dispatchers.Main) {
-                    finish()
+            val queue = Volley.newRequestQueue(this)
+            val request = object : JsonObjectRequest(
+                Method.GET,
+                "http://${connection.host}:${connection.apiPort}/information",
+                null,
+                { response: JSONObject ->
+                    Log.v("SetupActivity", response.toString())
+
+                    textViewTestConnection.setText(R.string.test_connection_success)
+
+                    GlobalScope.launch(Dispatchers.IO) {
+                        val connectionDao =
+                            AppDatabase.getInstance(applicationContext).connectionDao()
+                        if (edit) connectionDao.update(connection)
+                        else connectionDao.insert(connection)
+
+                        launch(Dispatchers.Main) {
+                            finish()
+                        }
+                    }
+
+                    buttonSave.visibility = VISIBLE
+                    progressBarSaving.visibility = INVISIBLE
+                },
+                { error: VolleyError ->
+                    Log.e("SetupActivity", error.toString())
+
+                    val message = "${getString(R.string.test_connection_error)}: $error"
+                    textViewTestConnection.text = message
+
+                    buttonSave.visibility = VISIBLE
+                    progressBarSaving.visibility = INVISIBLE
+                }) {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["api-key"] = connection.apiKey
+                    return headers
                 }
             }
+
+            // Add the request to the RequestQueue.
+            queue.add(request)
         }
 
         // Validation
@@ -111,6 +156,8 @@ class EditConnectionActivity : AppCompatActivity() {
         editTextHost.addTextChangedListener { validateInput() }
         editTextApiPort.addTextChangedListener { validateInput() }
         editTextApiKey.addTextChangedListener { validateInput() }
+
+        validateInput()
     }
 
     private fun validateInput() {
