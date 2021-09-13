@@ -54,10 +54,16 @@ class SettingsActivity : AppCompatActivity() {
 
             launch(Dispatchers.Main) {
                 Log.d("SettingsActivity", "Set adapter")
-                bridgesAdapter = BridgesRecyclerViewAdapter(connectionData)
+                bridgesAdapter = BridgesRecyclerViewAdapter(connectionData, position: Int -> {
+
+            })
                 recyclerViewBridges.adapter = bridgesAdapter
             }
         }
+    }
+
+    private fun onClickListener(position: Int) {
+
     }
 
 }
