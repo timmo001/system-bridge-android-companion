@@ -7,7 +7,9 @@ import android.view.View.GONE
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import dev.timmo.systembridge.Constants.Companion.CONNECTION_API_KEY
 import dev.timmo.systembridge.Constants.Companion.CONNECTION_API_PORT
 import dev.timmo.systembridge.Constants.Companion.CONNECTION_HOST
@@ -25,15 +27,29 @@ import kotlinx.coroutines.launch
 
 @DelicateCoroutinesApi
 class EditConnectionActivity : AppCompatActivity() {
+    private lateinit var editTextNameLayout: TextInputLayout
+    private lateinit var editTextHostLayout: TextInputLayout
+    private lateinit var editTextApiPortLayout: TextInputLayout
+    private lateinit var editTextApiKeyLayout: TextInputLayout
+    private lateinit var editTextName: TextInputEditText
+    private lateinit var editTextHost: TextInputEditText
+    private lateinit var editTextApiPort: TextInputEditText
+    private lateinit var editTextApiKey: TextInputEditText
+    private lateinit var buttonSave: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_connection)
 
-        val editTextName = findViewById<TextInputEditText>(R.id.editTextName)
-        val editTextHost = findViewById<TextInputEditText>(R.id.editTextHost)
-        val editTextApiPort = findViewById<TextInputEditText>(R.id.editTextApiPort)
-        val editTextApiKey = findViewById<TextInputEditText>(R.id.editTextApiKey)
-        val buttonSetupBridge = findViewById<Button>(R.id.buttonSetupBridge)
+        editTextNameLayout = findViewById(R.id.editTextNameLayout)
+        editTextHostLayout = findViewById(R.id.editTextHostLayout)
+        editTextApiPortLayout = findViewById(R.id.editTextApiPortLayout)
+        editTextApiKeyLayout = findViewById(R.id.editTextApiKeyLayout)
+        editTextName = findViewById(R.id.editTextName)
+        editTextHost = findViewById(R.id.editTextHost)
+        editTextApiPort = findViewById(R.id.editTextApiPort)
+        editTextApiKey = findViewById(R.id.editTextApiKey)
+        buttonSave = findViewById(R.id.buttonSetupBridge)
         val buttonDeleteBridge = findViewById<Button>(R.id.buttonDeleteBridge)
 
         val edit = intent?.getBooleanExtra(SETUP_EDIT, false) == true
@@ -41,7 +57,7 @@ class EditConnectionActivity : AppCompatActivity() {
 
         if (edit) {
             findViewById<TextView>(R.id.textViewSetupBridge).setText(R.string.edit_bridge)
-            buttonSetupBridge.setText(R.string.save)
+            buttonSave.setText(R.string.save)
             editTextName.setText(intent.getStringExtra(CONNECTION_NAME))
             editTextHost.setText(intent.getStringExtra(CONNECTION_HOST))
             editTextApiPort.setText(
@@ -69,7 +85,7 @@ class EditConnectionActivity : AppCompatActivity() {
             }
         }
 
-        buttonSetupBridge.setOnClickListener {
+        buttonSave.setOnClickListener {
             val name = editTextName.text.toString()
             val host = editTextHost.text.toString()
             val apiPort = editTextApiPort.text.toString().toInt()
@@ -89,5 +105,37 @@ class EditConnectionActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // Validation
+        editTextName.addTextChangedListener { validateInput() }
+        editTextHost.addTextChangedListener { validateInput() }
+        editTextApiPort.addTextChangedListener { validateInput() }
+        editTextApiKey.addTextChangedListener { validateInput() }
+    }
+
+    private fun validateInput() {
+        var saveEnabled = true
+        if (editTextName.text.isNullOrBlank()) {
+            editTextNameLayout.error =
+                "${getString(R.string.validation_error_a)} ${getString(R.string.name)}"
+            saveEnabled = false
+        } else editTextNameLayout.error = null
+        if (editTextHost.text.isNullOrBlank()) {
+            editTextHostLayout.error =
+                "${getString(R.string.validation_error_a)} ${getString(R.string.host)}"
+            saveEnabled = false
+        } else editTextHostLayout.error = null
+        if (editTextApiPort.text.isNullOrBlank()) {
+            editTextApiPortLayout.error =
+                "${getString(R.string.validation_error_a)} ${getString(R.string.api_port)}"
+            saveEnabled = false
+        } else editTextApiPortLayout.error = null
+        if (editTextApiKey.text.isNullOrBlank()) {
+            editTextApiKeyLayout.error =
+                "${getString(R.string.validation_error_an)} ${getString(R.string.api_key)}"
+            saveEnabled = false
+        } else editTextApiKeyLayout.error = null
+
+        buttonSave.isEnabled = saveEnabled
     }
 }
