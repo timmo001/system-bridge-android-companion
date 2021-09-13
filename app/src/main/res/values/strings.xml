@@ -15,5 +15,10 @@
     <string name="open">Open</string>
     <string name="save">Save</string>
     <string name="settings">Settings</string>
+    <string name="test_connection_error">Error connecting to server</string>
+    <string name="test_connection_in_progress">Testing Connection</string>
+    <string name="test_connection_success">Success</string>
+    <string name="validation_error_a">You must enter a</string>
+    <string name="validation_error_an">You must enter an</string>
     <string name="ws_port">WebSocket Port</string>
 </resources>
