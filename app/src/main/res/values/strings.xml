@@ -2,7 +2,7 @@
     <string name="app_name">System Bridge</string>
     <string name="activity_open_url">Open URL on Bridge</string>
     <string name="activity_settings">System Bridge Settings</string>
-    <string name="add_new_bridge">Add New Bridge</string>
+    <string name="add_bridge">Add Bridge</string>
     <string name="add">Add</string>
     <string name="api_key">API Key</string>
     <string name="api_port">API Port</string>
