@@ -3,10 +3,10 @@ package dev.timmo.systembridge.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import dev.timmo.systembridge.Constants.Companion.CONNECTION_API_KEY
-import dev.timmo.systembridge.Constants.Companion.CONNECTION_API_PORT
-import dev.timmo.systembridge.Constants.Companion.CONNECTION_HOST
-import dev.timmo.systembridge.Constants.Companion.CONNECTION_NAME
+import dev.timmo.systembridge.Constants.CONNECTION_API_KEY
+import dev.timmo.systembridge.Constants.CONNECTION_API_PORT
+import dev.timmo.systembridge.Constants.CONNECTION_HOST
+import dev.timmo.systembridge.Constants.CONNECTION_NAME
 
 @Entity
 data class Connection(
