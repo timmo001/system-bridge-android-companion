@@ -81,18 +81,7 @@ class EditConnectionActivity : AppCompatActivity() {
         }
 
         buttonDeleteBridge.setOnClickListener {
-            GlobalScope.launch(Dispatchers.IO) {
-                val connection = Connection(uid, "", "", 0, "")
-
-                Log.d("SetupActivity", connection.toString())
-
-                val connectionDao = AppDatabase.getInstance(applicationContext).connectionDao()
-                connectionDao.delete(connection)
-
-                launch(Dispatchers.Main) {
-                    finish()
-                }
-            }
+            deleteItem(uid)
         }
 
         buttonSave.setOnClickListener {
@@ -119,16 +108,7 @@ class EditConnectionActivity : AppCompatActivity() {
 
                     textViewTestConnection.setText(R.string.test_connection_success)
 
-                    GlobalScope.launch(Dispatchers.IO) {
-                        val connectionDao =
-                            AppDatabase.getInstance(applicationContext).connectionDao()
-                        if (edit) connectionDao.update(connection)
-                        else connectionDao.insert(connection)
-
-                        launch(Dispatchers.Main) {
-                            finish()
-                        }
-                    }
+                    updateItem(edit, connection)
 
                     buttonSave.visibility = VISIBLE
                     progressBarSaving.visibility = INVISIBLE
@@ -187,4 +167,33 @@ class EditConnectionActivity : AppCompatActivity() {
 
         buttonSave.isEnabled = saveEnabled
     }
+
+    private fun deleteItem(uid: Int) {
+        GlobalScope.launch(Dispatchers.IO) {
+            val connection = Connection(uid, "", "", 0, "")
+
+            Log.d("SetupActivity", connection.toString())
+
+            val connectionDao = AppDatabase.getInstance(applicationContext).connectionDao()
+            connectionDao.delete(connection)
+
+            launch(Dispatchers.Main) {
+                finish()
+            }
+        }
+    }
+
+    private fun updateItem(edit: Boolean, connection: Connection) {
+        GlobalScope.launch(Dispatchers.IO) {
+            val connectionDao =
+                AppDatabase.getInstance(applicationContext).connectionDao()
+            if (edit) connectionDao.update(connection)
+            else connectionDao.insert(connection)
+
+            launch(Dispatchers.Main) {
+                finish()
+            }
+        }
+    }
+
 }
