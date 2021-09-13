@@ -7,7 +7,7 @@
     tools:context=".activity.SetupActivity">
 
     <TextView
-        android:id="@+id/textViewSetup"
+        android:id="@+id/textViewSetupBridge"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -30,7 +30,7 @@
         app:boxBackgroundColor="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSetup">
+        app:layout_constraintTop_toBottomOf="@+id/textViewSetupBridge">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextName"
@@ -126,12 +126,22 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
         android:text="@string/add"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextApiKeyLayout"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextApiKeyLayout" />
+
+    <Button
+        android:id="@+id/buttonDeleteBridge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/red_800"
+        android:text="@string/delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSetupBridge" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

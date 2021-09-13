@@ -11,7 +11,7 @@ interface ConnectionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg connection: Connection)
 
-    @Update()
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(vararg connection: Connection)
 
     @Query("SELECT * FROM connection")

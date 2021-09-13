@@ -12,6 +12,7 @@ import dev.timmo.systembridge.Constants.Companion.CONNECTION_API_KEY
 import dev.timmo.systembridge.Constants.Companion.CONNECTION_API_PORT
 import dev.timmo.systembridge.Constants.Companion.CONNECTION_HOST
 import dev.timmo.systembridge.Constants.Companion.CONNECTION_NAME
+import dev.timmo.systembridge.Constants.Companion.CONNECTION_UID
 import dev.timmo.systembridge.Constants.Companion.SETUP_EDIT
 import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.AppDatabase
@@ -72,6 +73,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun onClickListener(position: Int) {
         val intentSetupActivity = Intent(this, SetupActivity::class.java)
         intentSetupActivity.putExtra(SETUP_EDIT, true)
+        intentSetupActivity.putExtra(CONNECTION_UID, connectionData[position].uid)
         intentSetupActivity.putExtra(CONNECTION_NAME, connectionData[position].name)
         intentSetupActivity.putExtra(CONNECTION_HOST, connectionData[position].host)
         intentSetupActivity.putExtra(CONNECTION_API_PORT, connectionData[position].apiPort)
