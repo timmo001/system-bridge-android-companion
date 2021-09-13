@@ -19,6 +19,7 @@ class SetupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_setup)
 
         findViewById<Button>(R.id.buttonSetupBridge).setOnClickListener {
+            val name = findViewById<TextInputEditText>(R.id.editTextName).text.toString()
             val host = findViewById<TextInputEditText>(R.id.editTextHost).text.toString()
             val apiPort =
                 findViewById<TextInputEditText>(R.id.editTextApiPort).text.toString().toInt()
@@ -29,6 +30,7 @@ class SetupActivity : AppCompatActivity() {
                 connectionDao.insert(
                     Connection(
                         0,
+                        name,
                         host,
                         apiPort,
                         apiKey
