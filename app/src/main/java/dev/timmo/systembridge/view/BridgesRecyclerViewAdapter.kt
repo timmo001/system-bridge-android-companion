@@ -4,16 +4,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.Connection
 
-class BridgesRecyclerViewAdapter(private val connections: List<Connection>) :
+class BridgesRecyclerViewAdapter(
+    private val connections: List<Connection>,
+    private val onClickListener: (Int) -> Unit
+) :
     RecyclerView.Adapter<BridgesRecyclerViewAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textViewName: TextView = view.findViewById(R.id.textViewName)
         val textViewHost: TextView = view.findViewById(R.id.textViewHost)
+        val constraintLayoutBridge: ConstraintLayout =
+            view.findViewById(R.id.constraintLayoutBridge)
     }
 
     // Create new views (invoked by the layout manager)
@@ -31,6 +37,9 @@ class BridgesRecyclerViewAdapter(private val connections: List<Connection>) :
         val url = "http://${connection.host}:${connection.apiPort}"
         viewHolder.textViewName.text = connection.name
         viewHolder.textViewHost.text = url
+        viewHolder.constraintLayoutBridge.setOnClickListener {
+            onClickListener(position)
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
