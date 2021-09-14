@@ -7,6 +7,7 @@ import android.net.nsd.NsdManager
 import android.net.nsd.NsdServiceInfo
 import android.os.Bundle
 import android.util.Log
+import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.TextView
@@ -39,6 +40,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private lateinit var recyclerViewBridges: RecyclerView
     private lateinit var recyclerViewDiscoveredBridges: RecyclerView
+    private lateinit var textViewSettingsDiscoveredBridges: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +67,7 @@ class SettingsActivity : AppCompatActivity() {
                     this@SettingsActivity::onClickListener
                 )
             }
+        textViewSettingsDiscoveredBridges = findViewById(R.id.textViewSettingsDiscoveredBridges)
 
         findViewById<Button>(R.id.buttonAddNewBridge).setOnClickListener {
             startActivity(Intent(this, EditConnectionActivity::class.java))
@@ -96,6 +99,7 @@ class SettingsActivity : AppCompatActivity() {
                     connectionData,
                     this@SettingsActivity::onClickListener,
                 )
+                textViewSettingsDiscoveredBridges.visibility = INVISIBLE
                 connectionDiscoveredData = emptyList()
                 nsdManager = (getSystemService(Context.NSD_SERVICE) as NsdManager)
                 nsdManager.discoverServices(
@@ -211,9 +215,7 @@ class SettingsActivity : AppCompatActivity() {
             Log.d(TAG, "connectionDiscoveredData: $connectionDiscoveredData")
 
             GlobalScope.launch(Dispatchers.Main) {
-                if (show) findViewById<TextView>(R.id.textViewSettingsDiscoveredBridges).apply {
-                    this.visibility = VISIBLE
-                }
+                if (show) textViewSettingsDiscoveredBridges.visibility = VISIBLE
                 Log.d(TAG, "Set discovered adapter")
                 recyclerViewDiscoveredBridges.adapter = BridgesRecyclerViewAdapter(
                     true,
@@ -224,7 +226,6 @@ class SettingsActivity : AppCompatActivity() {
 
         }
     }
-
 
     companion object {
         private const val TAG = "SettingsActivity"
