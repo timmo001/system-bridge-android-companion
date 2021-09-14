@@ -16,6 +16,7 @@ import com.android.volley.toolbox.Volley
 import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.AppDatabase
 import dev.timmo.systembridge.data.Connection
+import dev.timmo.systembridge.view.BridgesRecyclerViewAdapter
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -24,6 +25,9 @@ import org.json.JSONObject
 
 @DelicateCoroutinesApi
 class OpenInActivity : AppCompatActivity() {
+
+    private lateinit var buttonOpen: Button
+    private lateinit var spinnerBridge: Spinner
 
     private lateinit var connectionData: List<Connection>
     private lateinit var url: String
@@ -39,36 +43,16 @@ class OpenInActivity : AppCompatActivity() {
             }
         }
 
-        val buttonOpen = findViewById<Button>(R.id.buttonOpen).also { button: Button ->
+        buttonOpen = findViewById<Button>(R.id.buttonOpen).also { button: Button ->
             button.isEnabled = false
         }
-        val spinnerBridge = findViewById<Spinner>(R.id.spinnerBridge)
+        spinnerBridge = findViewById<Spinner>(R.id.spinnerBridge)
         val progressBarSending = findViewById<ProgressBar>(R.id.progressBarSending)
         val textviewResponse = findViewById<TextView>(R.id.textViewResponse)
 
         val textViewResponseOriginalColor = textviewResponse.textColors
 
-        val context = this
-
-        GlobalScope.launch(Dispatchers.IO) {
-            connectionData =
-                AppDatabase.getInstance(applicationContext).connectionDao().getAll()
-
-            Log.d("OpenInActivity", connectionData.toString())
-
-            launch(Dispatchers.Main) {
-                Log.d("OpenInActivity", "Set adapter")
-                spinnerBridge.adapter =
-                    ArrayAdapter(
-                        context,
-                        android.R.layout.simple_spinner_dropdown_item,
-                        connectionData.map { connection: Connection ->
-                            connection.name
-                        }
-                    )
-                buttonOpen.isEnabled = true
-            }
-        }
+        getData()
 
         buttonOpen.setOnClickListener {
             textviewResponse.text = null
@@ -118,6 +102,30 @@ class OpenInActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun getData() {
+        val context = this
+
+        GlobalScope.launch(Dispatchers.IO) {
+            connectionData =
+                AppDatabase.getInstance(applicationContext).connectionDao().getAll()
+
+            Log.d("OpenInActivity", connectionData.toString())
+
+            launch(Dispatchers.Main) {
+                Log.d("OpenInActivity", "Set adapter")
+                spinnerBridge.adapter =
+                    ArrayAdapter(
+                        context,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        connectionData.map { connection: Connection ->
+                            connection.name
+                        }
+                    )
+                buttonOpen.isEnabled = true
+            }
+        }
     }
 
     private fun handleSendText(intent: Intent) {
