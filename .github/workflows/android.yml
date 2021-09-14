@@ -33,14 +33,10 @@ jobs:
       - name: 🏗 Grant execute permission for gradlew
         run: |
           chmod +x gradlew
-      - name: 🏭 Build with Gradle
+      - name: 🏭 Run Tests
         run: |
-          ./gradlew assembleRelease
-      - name: ↗ Upload AAB
-        uses: actions/upload-artifact@v2.2.4
-        with:
-          name: app-aab
-          path: app/build/outputs/apk/**/*.aab
+          ./gradlew test
+      - name: 🏭 Build Project
       - name: ↗ Upload APK
         uses: actions/upload-artifact@v2.2.4
         with:
