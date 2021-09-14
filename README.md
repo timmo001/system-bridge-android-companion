@@ -1,3 +1,3 @@
-# System Bridge Android Connector
+# System Bridge Android Companion
 
-TBD
+Companion App for [System Bridge](https://system-bridge.timmo.dev)
