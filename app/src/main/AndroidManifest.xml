@@ -15,8 +15,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".activity.SettingsActivity"
-            android:exported="true"
-            android:label="@string/activity_settings">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
