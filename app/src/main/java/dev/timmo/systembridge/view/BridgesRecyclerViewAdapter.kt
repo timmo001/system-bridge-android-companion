@@ -10,8 +10,9 @@ import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.Connection
 
 class BridgesRecyclerViewAdapter(
+    private val discovered: Boolean,
     private val connections: List<Connection>,
-    private val onClickListener: (Int) -> Unit
+    private val onClickListener: (Boolean, Int) -> Unit,
 ) :
     RecyclerView.Adapter<BridgesRecyclerViewAdapter.ViewHolder>() {
 
@@ -35,10 +36,13 @@ class BridgesRecyclerViewAdapter(
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val connection: Connection = connections[position]
         val url = "http://${connection.host}:${connection.apiPort}"
-        viewHolder.textViewName.text = connection.name
+        viewHolder.textViewName.apply {
+            this.text = connection.name
+            if (discovered) this.setTextColor(resources.getColor(R.color.green_800))
+        }
         viewHolder.textViewHost.text = url
         viewHolder.constraintLayoutBridge.setOnClickListener {
-            onClickListener(position)
+            onClickListener(discovered, position)
         }
     }
 
