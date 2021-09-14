@@ -6,6 +6,7 @@
     <string name="add">Add</string>
     <string name="api_key">API Key</string>
     <string name="api_port">API Port</string>
+    <string name="bridges_discovered">Discovered Bridges</string>
     <string name="bridges">Bridges</string>
     <string name="confirmation_title">Are you sure?</string>
     <string name="delete">Delete</string>

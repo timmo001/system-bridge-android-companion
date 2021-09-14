@@ -7,11 +7,13 @@ import dev.timmo.systembridge.Constants.CONNECTION_API_KEY
 import dev.timmo.systembridge.Constants.CONNECTION_API_PORT
 import dev.timmo.systembridge.Constants.CONNECTION_HOST
 import dev.timmo.systembridge.Constants.CONNECTION_NAME
+import dev.timmo.systembridge.Constants.CONNECTION_UUID
 
 @Entity
 data class Connection(
     @PrimaryKey(autoGenerate = true) val uid: Int,
     @ColumnInfo(name = CONNECTION_NAME) val name: String,
+    @ColumnInfo(name = CONNECTION_UUID) var uuid: String,
     @ColumnInfo(name = CONNECTION_HOST) val host: String,
     @ColumnInfo(name = CONNECTION_API_PORT) val apiPort: Int,
     @ColumnInfo(name = CONNECTION_API_KEY) val apiKey: String,

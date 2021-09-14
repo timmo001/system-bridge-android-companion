@@ -71,14 +71,15 @@ class EditConnectionActivity : AppCompatActivity() {
         val edit = intent?.getBooleanExtra(SETUP_EDIT, false) == true
         val uid = intent?.getIntExtra(CONNECTION_UID, 0) ?: 0
 
+        editTextName.setText(intent.getStringExtra(CONNECTION_NAME))
+        editTextHost.setText(intent.getStringExtra(CONNECTION_HOST))
+        editTextApiPort.setText(
+            intent.getIntExtra(CONNECTION_API_PORT, DEFAULT_API_PORT).toString()
+        )
+
         if (edit) {
             findViewById<TextView>(R.id.textViewSetupBridge).setText(R.string.edit_bridge)
             buttonSave.setText(R.string.save)
-            editTextName.setText(intent.getStringExtra(CONNECTION_NAME))
-            editTextHost.setText(intent.getStringExtra(CONNECTION_HOST))
-            editTextApiPort.setText(
-                intent.getIntExtra(CONNECTION_API_PORT, DEFAULT_API_PORT).toString()
-            )
             editTextApiKey.setText(intent.getStringExtra(CONNECTION_API_KEY))
         } else {
             buttonDeleteBridge.isEnabled = false
@@ -101,8 +102,8 @@ class EditConnectionActivity : AppCompatActivity() {
             progressBarSaving.visibility = VISIBLE
             textViewTestConnection.setText(R.string.test_connection_in_progress)
 
-            val connection = Connection(uid, name, host, apiPort, apiKey)
-            Log.d("SetupActivity", connection.toString())
+            val connection = Connection(uid, name, "", host, apiPort, apiKey)
+            Log.d(TAG, connection.toString())
 
             testConnection(edit, connection)
         }
@@ -152,10 +153,14 @@ class EditConnectionActivity : AppCompatActivity() {
             "http://${connection.host}:${connection.apiPort}/information",
             null,
             { response: JSONObject ->
-                Log.d("SetupActivity", response.toString())
+                Log.d(TAG, response.toString())
 
                 textViewTestConnection.setText(R.string.generic_success)
                 textViewTestConnection.setTextColor(resources.getColor(R.color.green_800, theme))
+
+                connection.uuid = response["uuid"].toString()
+
+                Log.d(TAG, "uuid: ${connection.uuid}")
 
                 updateItem(edit, connection)
 
@@ -163,7 +168,7 @@ class EditConnectionActivity : AppCompatActivity() {
                 progressBarSaving.visibility = INVISIBLE
             },
             { error: VolleyError ->
-                Log.e("SetupActivity", error.toString())
+                Log.e(TAG, error.toString())
 
                 val message = "${getString(R.string.test_connection_error)}: $error"
                 textViewTestConnection.text = message
@@ -202,9 +207,9 @@ class EditConnectionActivity : AppCompatActivity() {
 
     private fun deleteItem(uid: Int) {
         GlobalScope.launch(Dispatchers.IO) {
-            val connection = Connection(uid, "", "", 0, "")
+            val connection = Connection(uid, "", "", "", 0, "")
 
-            Log.d("SetupActivity", connection.toString())
+            Log.d(TAG, connection.toString())
 
             val connectionDao = AppDatabase.getInstance(applicationContext).connectionDao()
             connectionDao.delete(connection)
@@ -226,6 +231,10 @@ class EditConnectionActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    companion object {
+        private const val TAG = "SetupActivity"
     }
 
 }
