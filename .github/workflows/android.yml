@@ -25,7 +25,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
       - name: 🏗 Set up JDK
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v2.3.0
         with:
           java-version: "11"
           distribution: "adopt"
@@ -36,3 +36,8 @@ jobs:
       - name: 🏭 Build with Gradle
         run: |
           ./gradlew build
+      - name: ↗ Upload APK
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: apk
+          path: app/build/outputs/apk/**/*.apk
