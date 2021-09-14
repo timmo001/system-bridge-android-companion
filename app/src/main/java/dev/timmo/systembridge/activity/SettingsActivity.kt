@@ -7,7 +7,9 @@ import android.net.nsd.NsdManager
 import android.net.nsd.NsdServiceInfo
 import android.os.Bundle
 import android.util.Log
+import android.view.View.VISIBLE
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +27,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 import java.net.InetAddress
 
 @DelicateCoroutinesApi
@@ -182,13 +185,19 @@ class SettingsActivity : AppCompatActivity() {
 
             Log.d(TAG, "foundDiscoveredConnection: $foundDiscoveredConnection")
 
-            if (foundDiscoveredConnection == null)
+            var show = false
+            if (foundDiscoveredConnection == null) {
+                if (connectionDiscoveredData.isEmpty()) show = true
                 connectionDiscoveredData = connectionDiscoveredData +
                         Connection(0, host.hostName, macAddress, host.hostName, port, "")
+            }
 
             Log.d(TAG, "connectionDiscoveredData: $connectionDiscoveredData")
 
             GlobalScope.launch(Dispatchers.Main) {
+                if (show) findViewById<TextView>(R.id.textViewSettingsDiscoveredBridges).apply {
+                    this.visibility = VISIBLE
+                }
                 Log.d(TAG, "Set discovered adapter")
                 recyclerViewDiscoveredBridges.adapter = BridgesRecyclerViewAdapter(
                     true,

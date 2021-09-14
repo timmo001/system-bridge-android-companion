@@ -72,6 +72,7 @@
         android:layout_marginEnd="16dp"
         android:text="@string/bridges_discovered"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonAddNewBridge" />
@@ -83,9 +84,11 @@
         android:layout_marginTop="8dp"
         android:clipToPadding="true"
         android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSettingsDiscoveredBridges"
+        app:layout_constraintVertical_bias="0.0"
         tools:itemCount="2"
         tools:listitem="@layout/view_bridge_item" />
 
