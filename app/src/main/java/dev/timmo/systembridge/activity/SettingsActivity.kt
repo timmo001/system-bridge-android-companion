@@ -27,7 +27,6 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 import java.net.InetAddress
 
 @DelicateCoroutinesApi
@@ -67,9 +66,6 @@ class SettingsActivity : AppCompatActivity() {
                 )
             }
 
-        nsdManager = (getSystemService(Context.NSD_SERVICE) as NsdManager)
-        nsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
-
         findViewById<Button>(R.id.buttonAddNewBridge).setOnClickListener {
             startActivity(Intent(this, EditConnectionActivity::class.java))
         }
@@ -78,6 +74,12 @@ class SettingsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         getData()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        connectionDiscoveredData = emptyList()
+        nsdManager.stopServiceDiscovery(discoveryListener)
     }
 
     private fun getData() {
@@ -93,6 +95,13 @@ class SettingsActivity : AppCompatActivity() {
                     false,
                     connectionData,
                     this@SettingsActivity::onClickListener,
+                )
+                connectionDiscoveredData = emptyList()
+                nsdManager = (getSystemService(Context.NSD_SERVICE) as NsdManager)
+                nsdManager.discoverServices(
+                    SERVICE_TYPE,
+                    NsdManager.PROTOCOL_DNS_SD,
+                    discoveryListener
                 )
             }
         }
@@ -174,20 +183,20 @@ class SettingsActivity : AppCompatActivity() {
 
             val host: InetAddress = serviceInfo.host
             val port: Int = serviceInfo.port
-            val macAddress: String = serviceInfo.attributes["mac"]?.decodeToString() ?: ""
+            val uuid: String = serviceInfo.attributes["uuid"]?.decodeToString() ?: ""
 
-            Log.d(TAG, "macAddress: $macAddress")
+            Log.d(TAG, "uuid: $uuid")
 
             val foundConnection =
                 connectionData.find { connection: Connection ->
-                    connection.macAddress == macAddress
+                    connection.uuid == uuid
                 }
 
             Log.d(TAG, "foundConnection: $foundConnection")
 
             val foundDiscoveredConnection =
                 connectionDiscoveredData.find { connection: Connection ->
-                    connection.macAddress == macAddress
+                    connection.uuid == uuid
                 }
 
             Log.d(TAG, "foundDiscoveredConnection: $foundDiscoveredConnection")
@@ -196,7 +205,7 @@ class SettingsActivity : AppCompatActivity() {
             if (foundConnection == null && foundDiscoveredConnection == null) {
                 if (connectionDiscoveredData.isEmpty()) show = true
                 connectionDiscoveredData = connectionDiscoveredData +
-                        Connection(0, host.hostName, macAddress, host.hostName, port, "")
+                        Connection(0, host.hostName, uuid, host.hostName, port, "")
             }
 
             Log.d(TAG, "connectionDiscoveredData: $connectionDiscoveredData")

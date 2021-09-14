@@ -158,9 +158,9 @@ class EditConnectionActivity : AppCompatActivity() {
                 textViewTestConnection.setText(R.string.generic_success)
                 textViewTestConnection.setTextColor(resources.getColor(R.color.green_800, theme))
 
-                connection.macAddress = response["mac"].toString()
+                connection.uuid = response["uuid"].toString()
 
-                Log.d(TAG, "macAddress: ${connection.macAddress}")
+                Log.d(TAG, "uuid: ${connection.uuid}")
 
                 updateItem(edit, connection)
 
