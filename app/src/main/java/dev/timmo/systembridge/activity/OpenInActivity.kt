@@ -1,12 +1,16 @@
 package dev.timmo.systembridge.activity
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.JsonObjectRequest
@@ -45,7 +49,7 @@ class OpenInActivity : AppCompatActivity() {
         buttonOpen = findViewById<Button>(R.id.buttonOpen).also { button: Button ->
             button.isEnabled = false
         }
-        spinnerBridge = findViewById<Spinner>(R.id.spinnerBridge)
+        spinnerBridge = findViewById(R.id.spinnerBridge)
         val progressBarSending = findViewById<ProgressBar>(R.id.progressBarSending)
         val textviewResponse = findViewById<TextView>(R.id.textViewResponse)
 
