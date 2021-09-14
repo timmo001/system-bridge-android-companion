@@ -41,7 +41,7 @@ jobs:
           ./gradlew build
       - name: 🏭 Build Release AAB
         run: |
-          ./gradlew bundleRelease
+          ./gradlew bundle
       - name: ↗ Upload APK
         uses: actions/upload-artifact@v2.2.4
         with:
