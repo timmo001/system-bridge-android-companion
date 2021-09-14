@@ -3,8 +3,11 @@ package dev.timmo.systembridge.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -36,10 +39,14 @@ class OpenInActivity : AppCompatActivity() {
             }
         }
 
-        val spinnerBridge = findViewById<Spinner>(R.id.spinnerBridge)
         val buttonOpen = findViewById<Button>(R.id.buttonOpen).also { button: Button ->
             button.isEnabled = false
         }
+        val spinnerBridge = findViewById<Spinner>(R.id.spinnerBridge)
+        val progressBarSending = findViewById<ProgressBar>(R.id.progressBarSending)
+        val textviewResponse = findViewById<TextView>(R.id.textViewResponse)
+
+        val textViewResponseOriginalColor = textviewResponse.textColors
 
         val context = this
 
@@ -47,10 +54,10 @@ class OpenInActivity : AppCompatActivity() {
             connectionData =
                 AppDatabase.getInstance(applicationContext).connectionDao().getAll()
 
-            Log.d("SettingsActivity", connectionData.toString())
+            Log.d("OpenInActivity", connectionData.toString())
 
             launch(Dispatchers.Main) {
-                Log.d("SettingsActivity", "Set adapter")
+                Log.d("OpenInActivity", "Set adapter")
                 spinnerBridge.adapter =
                     ArrayAdapter(
                         context,
@@ -64,6 +71,12 @@ class OpenInActivity : AppCompatActivity() {
         }
 
         buttonOpen.setOnClickListener {
+            textviewResponse.text = null
+            textviewResponse.setTextColor(textViewResponseOriginalColor)
+
+            buttonOpen.visibility = INVISIBLE
+            progressBarSending.visibility = VISIBLE
+
             val connection = connectionData.find { connection: Connection ->
                 connection.name == spinnerBridge.selectedItem
             }
@@ -78,10 +91,20 @@ class OpenInActivity : AppCompatActivity() {
                     "http://${connection.host}:${connection.apiPort}/open",
                     JSONObject(objRequest as Map<*, *>),
                     { response ->
-                        Log.v("OpenIn", response.toString())
+                        Log.v("OpenInActivity", response.toString())
+
+                        textviewResponse.setText(R.string.generic_success)
+                        textviewResponse.setTextColor(resources.getColor(R.color.green_800, theme))
+
+                        buttonOpen.visibility = VISIBLE
+                        progressBarSending.visibility = INVISIBLE
                     },
                     { error ->
-                        Log.e("OpenIn", error.message.toString())
+                        Log.e("OpenInActivity", error.toString())
+
+                        val message = "${getString(R.string.generic_error)}: $error"
+                        textviewResponse.text = message
+                        textviewResponse.setTextColor(resources.getColor(R.color.red_800, theme))
                     }) {
                     override fun getHeaders(): MutableMap<String, String> {
                         val headers = HashMap<String, String>()
