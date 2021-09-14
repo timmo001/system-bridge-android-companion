@@ -35,7 +35,7 @@ jobs:
           chmod +x gradlew
       - name: 🏭 Build with Gradle
         run: |
-          ./gradlew build
+          ./gradlew assembleRelease
       - name: ↗ Upload APK
         uses: actions/upload-artifact@v2.2.4
         with:
