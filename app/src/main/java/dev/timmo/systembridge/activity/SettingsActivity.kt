@@ -178,6 +178,13 @@ class SettingsActivity : AppCompatActivity() {
 
             Log.d(TAG, "macAddress: $macAddress")
 
+            val foundConnection =
+                connectionData.find { connection: Connection ->
+                    connection.macAddress == macAddress
+                }
+
+            Log.d(TAG, "foundConnection: $foundConnection")
+
             val foundDiscoveredConnection =
                 connectionDiscoveredData.find { connection: Connection ->
                     connection.macAddress == macAddress
@@ -186,7 +193,7 @@ class SettingsActivity : AppCompatActivity() {
             Log.d(TAG, "foundDiscoveredConnection: $foundDiscoveredConnection")
 
             var show = false
-            if (foundDiscoveredConnection == null) {
+            if (foundConnection == null && foundDiscoveredConnection == null) {
                 if (connectionDiscoveredData.isEmpty()) show = true
                 connectionDiscoveredData = connectionDiscoveredData +
                         Connection(0, host.hostName, macAddress, host.hostName, port, "")
