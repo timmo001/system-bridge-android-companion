@@ -16,7 +16,6 @@ import com.android.volley.toolbox.Volley
 import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.AppDatabase
 import dev.timmo.systembridge.data.Connection
-import dev.timmo.systembridge.view.BridgesRecyclerViewAdapter
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
