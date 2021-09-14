@@ -42,14 +42,14 @@ jobs:
       - name: 🏭 Build Project
         run: |
           ./gradlew build
-      - name: 🏭 Build Release AAB
-        run: |
-          ./gradlew bundle
       - name: ↗ Upload APK
         uses: actions/upload-artifact@v2.2.4
         with:
           name: app-apk
           path: app/build/outputs/apk/**/*.apk
+      - name: 🏭 Build Release AAB
+        run: |
+          ./gradlew bundle
       - name: 🖋 Sign AAB
         uses: r0adkll/sign-android-release@v1
         with:
