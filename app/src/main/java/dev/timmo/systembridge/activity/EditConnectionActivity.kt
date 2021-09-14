@@ -1,5 +1,6 @@
 package dev.timmo.systembridge.activity
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
@@ -46,6 +47,7 @@ class EditConnectionActivity : AppCompatActivity() {
     private lateinit var editTextNameLayout: TextInputLayout
     private lateinit var progressBarSaving: ProgressBar
     private lateinit var textViewTestConnection: TextView
+    private lateinit var textViewTestConnectionOriginalColor: ColorStateList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +65,8 @@ class EditConnectionActivity : AppCompatActivity() {
         editTextNameLayout = findViewById(R.id.editTextNameLayout)
         progressBarSaving = findViewById(R.id.progressBarSaving)
         textViewTestConnection = findViewById(R.id.textViewTestConnection)
+
+        textViewTestConnectionOriginalColor = textViewTestConnection.textColors
 
         val edit = intent?.getBooleanExtra(SETUP_EDIT, false) == true
         val uid = intent?.getIntExtra(CONNECTION_UID, 0) ?: 0
@@ -139,6 +143,8 @@ class EditConnectionActivity : AppCompatActivity() {
     }
 
     private fun testConnection(edit: Boolean, connection: Connection) {
+        textViewTestConnection.setTextColor(textViewTestConnectionOriginalColor)
+
         val queue = Volley.newRequestQueue(this)
         val request = object : JsonObjectRequest(
             Method.GET,
@@ -147,7 +153,8 @@ class EditConnectionActivity : AppCompatActivity() {
             { response: JSONObject ->
                 Log.d("SetupActivity", response.toString())
 
-                textViewTestConnection.setText(R.string.test_connection_success)
+                textViewTestConnection.setText(R.string.generic_success)
+                textViewTestConnection.setTextColor(resources.getColor(R.color.green_800, theme))
 
                 updateItem(edit, connection)
 
@@ -159,6 +166,7 @@ class EditConnectionActivity : AppCompatActivity() {
 
                 val message = "${getString(R.string.test_connection_error)}: $error"
                 textViewTestConnection.text = message
+                textViewTestConnection.setTextColor(resources.getColor(R.color.red_800, theme))
 
                 buttonSave.visibility = VISIBLE
                 progressBarSaving.visibility = INVISIBLE
