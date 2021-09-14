@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.lang.Exception
 import java.net.URI
+import java.net.URISyntaxException
 
 @DelicateCoroutinesApi
 class OpenInActivity : AppCompatActivity() {
@@ -133,15 +134,15 @@ class OpenInActivity : AppCompatActivity() {
 
     private fun handleSendText(intent: Intent) {
         intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text: String ->
+            val regex =
+                "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]".toRegex()
+            val matchedText = regex.find(text, 0)
+            Log.d(TAG, "matchedText: $matchedText")
             try {
-                val regex =
-                    "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]".toRegex()
-                val matchedText = regex.find(text, 0)
-                Log.d(TAG, "matchedText: $matchedText")
                 val url = URI(matchedText?.value).toString()
                 this.url = url
                 findViewById<TextView>(R.id.textViewUrl).text = url
-            } catch (e: Exception) {
+            } catch (e: URISyntaxException) {
                 val message = "${getText(R.string.url_error)}: $text"
                 Log.e(TAG, "$message - $e")
                 Toast.makeText(this, message, LENGTH_LONG).show()
