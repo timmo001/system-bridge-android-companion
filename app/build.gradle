@@ -6,6 +6,8 @@ plugins {
 
 android {
     compileSdk 31
+    compileSdkVersion 31
+    buildToolsVersion '31.0.0'
 
     defaultConfig {
         applicationId "dev.timmo.systembridge"
@@ -30,15 +32,26 @@ android {
             versionNameSuffix '-dev'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    compileSdkVersion 31
-    buildToolsVersion '31.0.0'
+
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            v2SigningEnabled true
+        }
+    }
+
 }
 
 dependencies {
