@@ -47,11 +47,6 @@ jobs:
         with:
           name: app-apk-debug
           path: app/build/outputs/apk/debug/app-debug.apk
-      - name: ↗ Upload APK - Release
-        uses: actions/upload-artifact@v2.2.4
-        with:
-          name: app-apk-release
-          path: app/build/outputs/apk/release/app-release.apk
       - name: 🏭 Build Release AAB
         run: |
           ./gradlew bundle
@@ -75,7 +70,27 @@ jobs:
         with:
           name: app-aab-release
           path: app/build/outputs/bundle/release/app-release.aab
-      - name: 📢 Deploy to Play Store
-        if: startsWith(github.ref, 'refs/tags/')
-        run: |
-          echo "Stub"
+      - name: 📢 Deploy to Play Store - Internal Sharing
+        if: ${{ github.ref == 'refs/heads/master' }}
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
+          packageName: dev.timmo.systembridge
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: internalsharing
+      - name: 📢 Deploy to Play Store - Beta
+        if: ${{ github.event_name == 'release' && github.event.release.prerelease == true }}
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
+          packageName: dev.timmo.systembridge
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: beta
+      - name: 📢 Deploy to Play Store - Production
+        if: ${{ github.event_name == 'release' && github.event.release.prerelease == true }}
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
+          packageName: dev.timmo.systembridge
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: production
