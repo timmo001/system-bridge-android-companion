@@ -71,6 +71,7 @@ class OpenInActivity : AppCompatActivity() {
         }
 
         buttonOpen.setOnClickListener {
+            textviewResponse.text = null
             textviewResponse.setTextColor(textViewResponseOriginalColor)
 
             buttonOpen.visibility = INVISIBLE

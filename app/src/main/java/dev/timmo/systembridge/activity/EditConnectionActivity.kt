@@ -143,6 +143,7 @@ class EditConnectionActivity : AppCompatActivity() {
     }
 
     private fun testConnection(edit: Boolean, connection: Connection) {
+        textViewTestConnection.text = null
         textViewTestConnection.setTextColor(textViewTestConnectionOriginalColor)
 
         val queue = Volley.newRequestQueue(this)
