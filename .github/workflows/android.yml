@@ -36,8 +36,13 @@ jobs:
       - name: 🏭 Build with Gradle
         run: |
           ./gradlew assembleRelease
+      - name: ↗ Upload AAB
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: app-aab
+          path: app/build/outputs/apk/**/*.aab
       - name: ↗ Upload APK
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: apk
+          name: app-apk
           path: app/build/outputs/apk/**/*.apk
