@@ -74,15 +74,15 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        getData()
-    }
-
     override fun onPause() {
         super.onPause()
         connectionDiscoveredData = emptyList()
         nsdManager.stopServiceDiscovery(discoveryListener)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getData()
     }
 
     private fun getData() {
