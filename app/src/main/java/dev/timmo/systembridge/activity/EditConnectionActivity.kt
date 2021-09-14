@@ -9,6 +9,7 @@ import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.android.volley.VolleyError
@@ -82,7 +83,9 @@ class EditConnectionActivity : AppCompatActivity() {
                 Editable.Factory.getInstance().newEditable(DEFAULT_API_PORT.toString())
         }
 
-        buttonDeleteBridge.setOnClickListener { deleteItem(uid) }
+        buttonDeleteBridge.setOnClickListener {
+            deleteConfirmation(uid)
+        }
 
         buttonSave.setOnClickListener {
             val name = editTextName.text.toString()
@@ -170,6 +173,22 @@ class EditConnectionActivity : AppCompatActivity() {
         // Add the request to the RequestQueue.
         queue.add(request)
 
+    }
+
+    private fun deleteConfirmation(uid: Int) {
+        val builder = AlertDialog.Builder(this)
+        builder
+            .setTitle(R.string.confirmation_title)
+            .setMessage(R.string.edit_bridge_delete_confirmation)
+            .setCancelable(false)
+            .setPositiveButton("Yes") { _, _ ->
+                deleteItem(uid)
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+        val alert = builder.create()
+        alert.show()
     }
 
     private fun deleteItem(uid: Int) {
