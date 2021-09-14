@@ -1,15 +1,13 @@
 package dev.timmo.systembridge.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
+import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -21,6 +19,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.lang.Exception
+import java.net.URI
 
 @DelicateCoroutinesApi
 class OpenInActivity : AppCompatActivity() {
@@ -74,7 +74,7 @@ class OpenInActivity : AppCompatActivity() {
                     "http://${connection.host}:${connection.apiPort}/open",
                     JSONObject(objRequest as Map<*, *>),
                     { response ->
-                        Log.v("OpenInActivity", response.toString())
+                        Log.v(TAG, response.toString())
 
                         textviewResponse.setText(R.string.generic_success)
                         textviewResponse.setTextColor(resources.getColor(R.color.green_800, theme))
@@ -83,7 +83,7 @@ class OpenInActivity : AppCompatActivity() {
                         progressBarSending.visibility = INVISIBLE
                     },
                     { error ->
-                        Log.e("OpenInActivity", error.toString())
+                        Log.e(TAG, error.toString())
 
                         val message = "${getString(R.string.generic_error)}: $error"
                         textviewResponse.text = message
@@ -110,10 +110,10 @@ class OpenInActivity : AppCompatActivity() {
             connectionData =
                 AppDatabase.getInstance(applicationContext).connectionDao().getAll()
 
-            Log.d("OpenInActivity", connectionData.toString())
+            Log.d(TAG, connectionData.toString())
 
             launch(Dispatchers.Main) {
-                Log.d("OpenInActivity", "Set adapter")
+                Log.d(TAG, "Set adapter")
                 spinnerBridge.adapter =
                     ArrayAdapter(
                         context,
@@ -128,11 +128,22 @@ class OpenInActivity : AppCompatActivity() {
     }
 
     private fun handleSendText(intent: Intent) {
-        intent.getStringExtra(Intent.EXTRA_TEXT)?.let { url ->
-            // Update UI to reflect text being shared
-            this.url = url
-            findViewById<TextView>(R.id.textViewUrl).text = url
+        intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text: String ->
+            try {
+                val url = URI(text).toString()
+                this.url = url
+                findViewById<TextView>(R.id.textViewUrl).text = url
+            } catch (e: Exception) {
+                val message = "${getText(R.string.url_error)}: $text"
+                Log.e(TAG, "$message - $e")
+                Toast.makeText(this, message, LENGTH_LONG).show()
+                finish()
+            }
         }
+    }
+
+    companion object {
+        private const val TAG = "OpenInActivity"
     }
 
 }
