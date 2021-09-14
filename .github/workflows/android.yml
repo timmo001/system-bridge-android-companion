@@ -45,7 +45,7 @@ jobs:
       - name: ↗ Upload APK - Debug
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: app-apk-debug
+          name: app-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
       - name: 🏭 Build Release AAB
         run: |
@@ -53,7 +53,7 @@ jobs:
       - name: ↗ Upload AAB - Debug
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: app-aab-debug
+          name: app-debug-aab
           path: app/build/outputs/bundle/debug/app-debug.aab
       - name: 🖋 Sign AAB
         uses: r0adkll/sign-android-release@v1
@@ -68,7 +68,7 @@ jobs:
       - name: ↗ Upload AAB - Release
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: app-aab-release
+          name: app-release-aab
           path: app/build/outputs/bundle/release/app-release.aab
       - name: 📢 Deploy to Play Store - Internal Sharing
         if: ${{ github.ref == 'refs/heads/master' }}
