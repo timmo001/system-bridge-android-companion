@@ -18,7 +18,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         targetSdkVersion 31
-        signingConfig signingConfigs.debug
         minSdkVersion 24
     }
 
