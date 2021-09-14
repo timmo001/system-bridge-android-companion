@@ -37,6 +37,11 @@ jobs:
         run: |
           ./gradlew test
       - name: 🏭 Build Project
+        run: |
+          ./gradlew build
+      - name: 🏭 Build Release AAB
+        run: |
+          ./gradlew bundleRelease
       - name: ↗ Upload APK
         uses: actions/upload-artifact@v2.2.4
         with:
