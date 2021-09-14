@@ -70,6 +70,18 @@ jobs:
         with:
           name: app-release-aab
           path: app/build/outputs/bundle/release/app-release.aab
+      - name: ↗ Upload APK - Release Asset
+        if: ${{ github.event_name == 'release' }}
+        uses: fnkr/github-action-ghr@v1.3
+        env:
+          GHR_PATH: app/build/outputs/apk/debug/app-debug.apk
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: ↗ Upload AAB - Release Asset
+        if: ${{ github.event_name == 'release' }}
+        uses: fnkr/github-action-ghr@v1.3
+        env:
+          GHR_PATH: app/build/outputs/bundle/release/app-release.aab
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 📢 Deploy to Play Store - Internal Sharing
         if: ${{ github.ref == 'refs/heads/master' }}
         uses: r0adkll/upload-google-play@v1
