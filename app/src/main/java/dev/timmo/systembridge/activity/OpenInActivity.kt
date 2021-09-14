@@ -130,7 +130,11 @@ class OpenInActivity : AppCompatActivity() {
     private fun handleSendText(intent: Intent) {
         intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text: String ->
             try {
-                val url = URI(text).toString()
+                val regex =
+                    "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]".toRegex()
+                val matchedText = regex.find(text, 0)
+                Log.d(TAG, "matchedText: $matchedText")
+                val url = URI(matchedText?.value).toString()
                 this.url = url
                 findViewById<TextView>(R.id.textViewUrl).text = url
             } catch (e: Exception) {
