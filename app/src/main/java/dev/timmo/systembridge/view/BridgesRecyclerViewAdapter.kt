@@ -40,7 +40,10 @@ class BridgesRecyclerViewAdapter(
             this.text = connection.name
             if (discovered) this.setTextColor(resources.getColor(R.color.green_800))
         }
-        viewHolder.textViewHost.text = url
+        viewHolder.textViewHost.apply {
+            this.text = url
+            if (discovered) this.setTextColor(resources.getColor(R.color.green_800))
+        }
         viewHolder.constraintLayoutBridge.setOnClickListener {
             onClickListener(discovered, position)
         }
