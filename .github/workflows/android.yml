@@ -91,7 +91,7 @@ jobs:
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
           track: internalsharing
       - name: 📢 Deploy to Play Store - Beta
-        if: ${{ github.event_name == 'release' && github.event.release.prerelease == false }}
+        if: ${{ github.event_name == 'release' && github.event.release.prerelease == true }}
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
@@ -99,7 +99,7 @@ jobs:
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
           track: beta
       - name: 📢 Deploy to Play Store - Production
-        if: ${{ github.event_name == 'release' && github.event.release.prerelease == true }}
+        if: ${{ github.event_name == 'release' && github.event.release.prerelease == false }}
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
