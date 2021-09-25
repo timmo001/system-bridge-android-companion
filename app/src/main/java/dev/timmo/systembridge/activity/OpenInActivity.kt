@@ -92,6 +92,9 @@ class OpenInActivity : AppCompatActivity() {
                         val message = "${getString(R.string.generic_error)}: $error"
                         textviewResponse.text = message
                         textviewResponse.setTextColor(resources.getColor(R.color.red_800, theme))
+
+                        buttonOpen.visibility = VISIBLE
+                        progressBarSending.visibility = INVISIBLE
                     }) {
                     override fun getHeaders(): MutableMap<String, String> {
                         val headers = HashMap<String, String>()
