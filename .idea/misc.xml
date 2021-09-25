@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Documents/GitHub/system-bridge-android-companion/app/src/main/res/layout/activity_edit_connection.xml" value="0.4119791666666667" />
+        <entry key="..\:/Documents/GitHub/system-bridge-android-companion/app/src/main/res/layout/activity_open_in.xml" value="0.4119791666666667" />
+        <entry key="..\:/Documents/GitHub/system-bridge-android-companion/app/src/main/res/layout/activity_send_to.xml" value="0.4119791666666667" />
+        <entry key="..\:/Documents/GitHub/system-bridge-android-companion/app/src/main/res/layout/activity_settings.xml" value="0.4119791666666667" />
         <entry key="..\:/Documents/GitHub/system-bridge-android-connector/app/src/main/res/layout/activity_edit_connection.xml" value="0.4140625" />
         <entry key="..\:/Documents/GitHub/system-bridge-android-connector/app/src/main/res/layout/activity_open_in.xml" value="0.425" />
         <entry key="..\:/Documents/GitHub/system-bridge-android-connector/app/src/main/res/layout/activity_settings.xml" value="0.425" />

@@ -39,6 +39,21 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.SendToActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:label="@string/activity_send_to"
+            android:theme="@style/Theme.SystemBridge.Dialog">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*"/>
+                <data android:mimeType="video/*"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
