@@ -4,15 +4,19 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.View
-import android.view.ViewParent
-import android.widget.*
+import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.Volley
 import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.AppDatabase
@@ -209,6 +213,5 @@ class SendToActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "SendToActivity"
     }
-
 
 }
