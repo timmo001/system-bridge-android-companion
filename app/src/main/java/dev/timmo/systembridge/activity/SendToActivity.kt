@@ -69,6 +69,7 @@ class SendToActivity : AppCompatActivity() {
                     android.R.layout.simple_spinner_dropdown_item,
                     pathBaseItems
                 )
+
             // Select downloads by default
             spinner.setSelection(2)
             path = "${pathBaseItems[2]}/$filename"
