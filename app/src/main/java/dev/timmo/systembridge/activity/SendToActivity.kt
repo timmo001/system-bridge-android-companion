@@ -17,6 +17,9 @@ import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+import com.android.volley.DefaultRetryPolicy.DEFAULT_MAX_RETRIES
 import com.android.volley.toolbox.Volley
 import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.AppDatabase
@@ -112,16 +115,10 @@ class SendToActivity : AppCompatActivity() {
                 val inputStream = contentResolver.openInputStream(this.uri)
                 val imageData = inputStream?.readBytes()
 
-
-                val objRequest = HashMap<String, String>()
-                objRequest["path"] = this.path
-
-                Log.d(TAG, "path: ${objRequest["path"]}")
-
                 val queue = Volley.newRequestQueue(this)
                 val request = object : VolleyFileUploadRequest(
                     Method.POST,
-                    "http://${connection.host}:${connection.apiPort}/filesystem/files/file",
+                    "http://${connection.host}:${connection.apiPort}/filesystem/files/file?path=${this.path}",
                     { response ->
                         Log.v(TAG, response.toString())
 
@@ -152,6 +149,12 @@ class SendToActivity : AppCompatActivity() {
                         params["imageFile"] = FileDataPart(filename, imageData!!, mimeType)
                         return params
                     }
+                }.also { request: VolleyFileUploadRequest ->
+                    request.retryPolicy = DefaultRetryPolicy(
+                        60000,
+                        DEFAULT_MAX_RETRIES,
+                        DEFAULT_BACKOFF_MULT
+                    )
                 }
 
                 // Add the request to the RequestQueue.
