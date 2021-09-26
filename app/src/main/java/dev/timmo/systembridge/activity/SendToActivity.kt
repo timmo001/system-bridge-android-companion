@@ -30,6 +30,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.BufferedInputStream
 import java.io.File
 
 @DelicateCoroutinesApi
@@ -113,7 +114,11 @@ class SendToActivity : AppCompatActivity() {
 
             if (connection !== null) {
                 val inputStream = contentResolver.openInputStream(this.uri)
-                val imageData = inputStream?.readBytes()
+                lateinit var bytes: ByteArray
+
+                inputStream?.buffered().use { bufferedInputStream: BufferedInputStream? ->
+                    if (bufferedInputStream != null) bytes = bufferedInputStream.readBytes()
+                }
 
                 val queue = Volley.newRequestQueue(this)
                 val request = object : VolleyFileUploadRequest(
@@ -146,7 +151,7 @@ class SendToActivity : AppCompatActivity() {
 
                     override fun getByteData(): MutableMap<String, FileDataPart> {
                         val params = HashMap<String, FileDataPart>()
-                        params["imageFile"] = FileDataPart(filename, imageData!!, mimeType)
+                        params["file"] = FileDataPart(filename, bytes, mimeType)
                         return params
                     }
                 }.also { request: VolleyFileUploadRequest ->
