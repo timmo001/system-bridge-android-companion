@@ -30,8 +30,7 @@ open class VolleyFileUploadRequest(
     private val divider: String = "--"
     private val ending = "\r\n"
     private val boundary = "imageRequest${System.currentTimeMillis()}"
-
-
+    
     override fun getHeaders(): MutableMap<String, String> =
         when (headers) {
             null -> super.getHeaders()
@@ -128,5 +127,3 @@ open class VolleyFileUploadRequest(
         }
     }
 }
-
-class FileDataPart(var filename: String?, var data: ByteArray, var contentType: String)

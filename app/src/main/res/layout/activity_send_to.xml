@@ -69,7 +69,7 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerPathBase" />
+        app:layout_constraintTop_toBottomOf="@id/textViewPath" />
 
     <TextView
         android:id="@+id/textViewResponse"
