@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="path_base">
+        <item>desktop</item>
+        <item>documents</item>
+        <item>downloads</item>
+        <item>home</item>
+        <item>music</item>
+        <item>pictures</item>
+        <item>videos</item>
+    </array>
+</resources>

@@ -1,12 +1,18 @@
 package dev.timmo.systembridge.activity
 
+import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.View
+import android.view.ViewParent
 import android.widget.*
-import com.android.volley.Request
+import android.widget.AdapterView.OnItemSelectedListener
 import com.android.volley.toolbox.Volley
 import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.AppDatabase
@@ -17,6 +23,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.File
 
 @DelicateCoroutinesApi
 class SendToActivity : AppCompatActivity() {
@@ -26,7 +33,12 @@ class SendToActivity : AppCompatActivity() {
     private lateinit var spinnerPathBase: Spinner
 
     private lateinit var connectionData: List<Connection>
-    private lateinit var text: String
+    private lateinit var pathBaseItems: List<String>
+
+    private lateinit var filename: String
+    private lateinit var mimeType: String
+    private lateinit var path: String
+    private lateinit var uri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +50,41 @@ class SendToActivity : AppCompatActivity() {
             }
         }
 
+        pathBaseItems = resources.getStringArray(R.array.path_base).toList()
+
+        val textViewPath = findViewById<TextView>(R.id.textViewPath)
+
         buttonSend = findViewById<Button>(R.id.buttonSend).also { button: Button ->
             button.isEnabled = false
         }
         spinnerBridge = findViewById(R.id.spinnerBridge)
-        spinnerPathBase = findViewById(R.id.spinnerPathBase)
+        spinnerPathBase = findViewById<Spinner>(R.id.spinnerPathBase).also { spinner: Spinner ->
+            spinner.adapter =
+                ArrayAdapter(
+                    this,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    pathBaseItems
+                )
+            // Select downloads by default
+            spinner.setSelection(2)
+            path = "${pathBaseItems[2]}/$filename"
+            textViewPath.text = path
+
+            spinner.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long,
+                ) {
+                    this@SendToActivity.path = "${pathBaseItems[position]}/$filename"
+                    textViewPath.text = path
+                }
+
+            }
+        }
         val progressBarSending = findViewById<ProgressBar>(R.id.progressBarSending)
         val textviewResponse = findViewById<TextView>(R.id.textViewResponse)
 
@@ -62,8 +104,14 @@ class SendToActivity : AppCompatActivity() {
             }
 
             if (connection !== null) {
+                val inputStream = contentResolver.openInputStream(this.uri)
+                val imageData = inputStream?.readBytes()
+
+
                 val objRequest = HashMap<String, String>()
-                objRequest["path"] = this.text
+                objRequest["path"] = this.path
+
+                Log.d(TAG, "path: ${objRequest["path"]}")
 
                 val queue = Volley.newRequestQueue(this)
                 val request = object : VolleyFileUploadRequest(
@@ -95,8 +143,8 @@ class SendToActivity : AppCompatActivity() {
                     }
 
                     override fun getByteData(): MutableMap<String, FileDataPart> {
-                        var params = HashMap<String, FileDataPart>()
-                        params["imageFile"] = FileDataPart("image", imageData!!, "jpeg")
+                        val params = HashMap<String, FileDataPart>()
+                        params["imageFile"] = FileDataPart(filename, imageData!!, mimeType)
                         return params
                     }
                 }
@@ -118,7 +166,6 @@ class SendToActivity : AppCompatActivity() {
             Log.d(TAG, connectionData.toString())
 
             launch(Dispatchers.Main) {
-                Log.d(TAG, "Set adapter")
                 spinnerBridge.adapter =
                     ArrayAdapter(
                         context,
@@ -132,10 +179,30 @@ class SendToActivity : AppCompatActivity() {
         }
     }
 
+    private fun Context.getFileName(uri: Uri): String? = when (uri.scheme) {
+        ContentResolver.SCHEME_CONTENT -> getContentFileName(uri)
+        else -> uri.path?.let(::File)?.name
+    }
+
+    private fun Context.getContentFileName(uri: Uri): String? = runCatching {
+        contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            cursor.moveToFirst()
+            return@use cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME)
+                .let(cursor::getString)
+        }
+    }.getOrNull()
+
     private fun handleFile(intent: Intent) {
-        intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text: String ->
-            Log.d(TAG, "file: $text")
-            this.text = text
+        Log.d(TAG, "intent: $intent")
+        Log.d(TAG, "mimeType: ${intent.type}")
+        this.mimeType = intent.type.toString()
+
+        (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let { uri: Uri ->
+            Log.d(TAG, "uri: $uri")
+            this.uri = uri
+
+            this.filename = getFileName(uri).orEmpty()
+            Log.d(TAG, "filename: ${this.filename}")
         }
     }
 

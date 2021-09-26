@@ -107,9 +107,9 @@ open class VolleyFileUploadRequest(
         data.forEach {
             val dataFile = it.value
             dataOutputStream.writeBytes("$divider$boundary$ending")
-            dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"${it.key}\"; filename=\"${dataFile.fileName}\"$ending")
-            if (dataFile.type.trim().isNotEmpty()) {
-                dataOutputStream.writeBytes("Content-Type: ${dataFile.type}$ending")
+            dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"${it.key}\"; filename=\"${dataFile.filename}\"$ending")
+            if (dataFile.contentType.trim().isNotEmpty()) {
+                dataOutputStream.writeBytes("Content-Type: ${dataFile.contentType}$ending")
             }
             dataOutputStream.writeBytes(ending)
             val fileInputStream = ByteArrayInputStream(dataFile.data)
@@ -129,4 +129,4 @@ open class VolleyFileUploadRequest(
     }
 }
 
-class FileDataPart(var fileName: String?, var data: ByteArray, var type: String)
+class FileDataPart(var filename: String?, var data: ByteArray, var contentType: String)
