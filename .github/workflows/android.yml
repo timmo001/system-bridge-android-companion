@@ -28,7 +28,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
       - name: 🏗 Set up JDK
-        uses: actions/setup-java@v2.3.0
+        uses: actions/setup-java@v2.3.1
         with:
           java-version: "11"
           distribution: "adopt"
