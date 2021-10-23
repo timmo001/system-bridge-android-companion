@@ -38,11 +38,19 @@ class BridgesRecyclerViewAdapter(
         val url = "http://${connection.host}:${connection.apiPort}"
         viewHolder.textViewName.apply {
             this.text = connection.name
-            if (discovered) this.setTextColor(resources.getColor(R.color.green_800))
+            if (discovered) this.setTextColor(
+                resources.getColor(
+                    R.color.green_800,
+                    resources.newTheme()
+                ))
         }
         viewHolder.textViewHost.apply {
             this.text = url
-            if (discovered) this.setTextColor(resources.getColor(R.color.green_800))
+            if (discovered) this.setTextColor(
+                resources.getColor(
+                    R.color.green_800,
+                    resources.newTheme()
+                ))
         }
         viewHolder.constraintLayoutBridge.setOnClickListener {
             onClickListener(discovered, position)
