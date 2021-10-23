@@ -1,4 +1,4 @@
-package dev.timmo.systembridge.data
+package dev.timmo.systembridge.data.bridge
 
 import retrofit2.Call
 import retrofit2.http.Body

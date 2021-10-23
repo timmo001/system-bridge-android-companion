@@ -1,4 +1,4 @@
-package dev.timmo.systembridge
+package dev.timmo.systembridge.shared
 
 object Constants {
     const val CONNECTION_UID = "uid"

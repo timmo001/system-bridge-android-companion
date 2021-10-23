@@ -1,4 +1,4 @@
-package dev.timmo.systembridge.data
+package dev.timmo.systembridge.data.bridge
 
 data class Information(
     val address: String,
