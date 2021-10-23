@@ -1,4 +1,4 @@
-package dev.timmo.systembridge.data
+package dev.timmo.systembridge.shared
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
