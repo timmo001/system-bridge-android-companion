@@ -13,16 +13,15 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import dev.timmo.systembridge.R
-import dev.timmo.systembridge.data.AppDatabase
-import dev.timmo.systembridge.data.Connection
+import dev.timmo.systembridge.data.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.net.URI
 import java.net.URISyntaxException
 
@@ -69,15 +68,18 @@ class OpenInActivity : AppCompatActivity() {
             }
 
             if (connection !== null) {
-                val objRequest = HashMap<String, String>()
-                objRequest["path"] = this.url
 
-                val queue = Volley.newRequestQueue(this)
-                val request = object : JsonObjectRequest(
-                    Method.POST,
-                    "http://${connection.host}:${connection.apiPort}/open",
-                    JSONObject(objRequest as Map<*, *>),
-                    { response ->
+                val request = ServiceBuilder.buildService(
+                    "http://${connection.host}:${connection.apiPort}",
+                    Endpoints::class.java
+                )
+                val call = request.postOpen(connection.apiKey, Open(this.url))
+
+                call.enqueue(object : Callback<Open> {
+                    override fun onResponse(
+                        call: Call<Open>,
+                        response: Response<Open>,
+                    ) {
                         Log.v(TAG, response.toString())
 
                         textviewResponse.setText(R.string.generic_success)
@@ -85,9 +87,11 @@ class OpenInActivity : AppCompatActivity() {
 
                         buttonOpen.visibility = VISIBLE
                         progressBarSending.visibility = INVISIBLE
-                    },
-                    { error ->
-                        Log.e(TAG, error.toString())
+                    }
+
+                    override fun onFailure(call: Call<Open>, t: Throwable) {
+                        val error = t.message.toString()
+                        Log.e(TAG, error)
 
                         val message = "${getString(R.string.generic_error)}: $error"
                         textviewResponse.text = message
@@ -95,16 +99,10 @@ class OpenInActivity : AppCompatActivity() {
 
                         buttonOpen.visibility = VISIBLE
                         progressBarSending.visibility = INVISIBLE
-                    }) {
-                    override fun getHeaders(): MutableMap<String, String> {
-                        val headers = HashMap<String, String>()
-                        headers["api-key"] = connection.apiKey
-                        return headers
                     }
-                }
 
-                // Add the request to the RequestQueue.
-                queue.add(request)
+                })
+
             }
         }
 

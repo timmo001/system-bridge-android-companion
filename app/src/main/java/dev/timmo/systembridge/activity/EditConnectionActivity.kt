@@ -13,9 +13,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import com.android.volley.VolleyError
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dev.timmo.systembridge.Constants.CONNECTION_API_KEY
@@ -26,13 +23,14 @@ import dev.timmo.systembridge.Constants.CONNECTION_UID
 import dev.timmo.systembridge.Constants.DEFAULT_API_PORT
 import dev.timmo.systembridge.Constants.SETUP_EDIT
 import dev.timmo.systembridge.R
-import dev.timmo.systembridge.data.AppDatabase
-import dev.timmo.systembridge.data.Connection
+import dev.timmo.systembridge.data.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @DelicateCoroutinesApi
 class EditConnectionActivity : AppCompatActivity() {
@@ -147,18 +145,20 @@ class EditConnectionActivity : AppCompatActivity() {
         textViewTestConnection.text = null
         textViewTestConnection.setTextColor(textViewTestConnectionOriginalColor)
 
-        val queue = Volley.newRequestQueue(this)
-        val request = object : JsonObjectRequest(
-            Method.GET,
-            "http://${connection.host}:${connection.apiPort}/information",
-            null,
-            { response: JSONObject ->
+        val request = ServiceBuilder.buildService(
+            "http://${connection.host}:${connection.apiPort}",
+            Endpoints::class.java
+        )
+        val call = request.getInformation(connection.apiKey)
+
+        call.enqueue(object : Callback<Information> {
+            override fun onResponse(call: Call<Information>, response: Response<Information>) {
                 Log.d(TAG, response.toString())
 
                 textViewTestConnection.setText(R.string.generic_success)
                 textViewTestConnection.setTextColor(resources.getColor(R.color.green_800, theme))
 
-                connection.uuid = response["uuid"].toString()
+                connection.uuid = response.body()?.uuid ?: ""
 
                 Log.d(TAG, "uuid: ${connection.uuid}")
 
@@ -166,9 +166,11 @@ class EditConnectionActivity : AppCompatActivity() {
 
                 buttonSave.visibility = VISIBLE
                 progressBarSaving.visibility = INVISIBLE
-            },
-            { error: VolleyError ->
-                Log.e(TAG, error.toString())
+            }
+
+            override fun onFailure(call: Call<Information>, t: Throwable) {
+                val error = t.message.toString()
+                Log.e(TAG, error)
 
                 val message = "${getString(R.string.test_connection_error)}: $error"
                 textViewTestConnection.text = message
@@ -176,17 +178,9 @@ class EditConnectionActivity : AppCompatActivity() {
 
                 buttonSave.visibility = VISIBLE
                 progressBarSaving.visibility = INVISIBLE
-            }) {
-            override fun getHeaders(): MutableMap<String, String> {
-                val headers = HashMap<String, String>()
-                headers["api-key"] = connection.apiKey
-                return headers
             }
-        }
 
-        // Add the request to the RequestQueue.
-        queue.add(request)
-
+        })
     }
 
     private fun deleteConfirmation(uid: Int) {
