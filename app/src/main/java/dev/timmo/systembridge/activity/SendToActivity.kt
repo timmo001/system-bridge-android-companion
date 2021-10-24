@@ -127,12 +127,6 @@ class SendToActivity : AppCompatActivity() {
                     if (bufferedInputStream != null) bytes = bufferedInputStream.readBytes()
                 }
 
-                val reqFile: RequestBody = bytes.toRequestBody(this.mimeType.toMediaTypeOrNull())
-                val body: MultipartBody.Part =
-                    MultipartBody.Part.createFormData("upload", this.filename, reqFile)
-                val name: RequestBody =
-                    "upload_test".toRequestBody("text/plain".toMediaTypeOrNull())
-
                 val request = ServiceBuilder.buildService(
                     "http://${connection.host}:${connection.apiPort}",
                     Endpoints::class.java
@@ -140,8 +134,12 @@ class SendToActivity : AppCompatActivity() {
                 val call = request.postFile(
                     connection.apiKey,
                     this.path,
-                    body,
-                    name,
+                    MultipartBody.Part.createFormData(
+                        "upload",
+                        this.filename,
+                        bytes.toRequestBody(this.mimeType.toMediaTypeOrNull())
+                    ),
+                    this.filename.toRequestBody("text/plain".toMediaTypeOrNull()),
                 )
 
                 call.enqueue(object : Callback<Any> {
@@ -167,7 +165,7 @@ class SendToActivity : AppCompatActivity() {
                         progressBarSending.visibility = View.INVISIBLE
                     }
                 })
-                
+
             }
         }
 
