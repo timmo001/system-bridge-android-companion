@@ -17,21 +17,28 @@ import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.DefaultRetryPolicy
-import com.android.volley.DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-import com.android.volley.DefaultRetryPolicy.DEFAULT_MAX_RETRIES
-import com.android.volley.toolbox.Volley
 import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.AppDatabase
 import dev.timmo.systembridge.data.Connection
-import dev.timmo.systembridge.shared.FileDataPart
-import dev.timmo.systembridge.shared.VolleyFileUploadRequest
+import dev.timmo.systembridge.data.bridge.Endpoints
+import dev.timmo.systembridge.shared.ServiceBuilder
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import retrofit2.Callback
 import java.io.BufferedInputStream
 import java.io.File
+
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody.Part.Companion.create
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Call
+import retrofit2.Response
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+
 
 @DelicateCoroutinesApi
 class SendToActivity : AppCompatActivity() {
@@ -120,11 +127,25 @@ class SendToActivity : AppCompatActivity() {
                     if (bufferedInputStream != null) bytes = bufferedInputStream.readBytes()
                 }
 
-                val queue = Volley.newRequestQueue(this)
-                val request = object : VolleyFileUploadRequest(
-                    Method.POST,
-                    "http://${connection.host}:${connection.apiPort}/filesystem/files/file?path=${this.path}",
-                    { response ->
+                val reqFile: RequestBody = bytes.toRequestBody(this.mimeType.toMediaTypeOrNull())
+                val body: MultipartBody.Part =
+                    MultipartBody.Part.createFormData("upload", this.filename, reqFile)
+                val name: RequestBody =
+                    "upload_test".toRequestBody("text/plain".toMediaTypeOrNull())
+
+                val request = ServiceBuilder.buildService(
+                    "http://${connection.host}:${connection.apiPort}",
+                    Endpoints::class.java
+                )
+                val call = request.postFile(
+                    connection.apiKey,
+                    this.path,
+                    body,
+                    name,
+                )
+
+                call.enqueue(object : Callback<Any> {
+                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         Log.v(TAG, response.toString())
 
                         textviewResponse.setText(R.string.generic_success)
@@ -132,9 +153,11 @@ class SendToActivity : AppCompatActivity() {
 
                         buttonSend.visibility = View.VISIBLE
                         progressBarSending.visibility = View.INVISIBLE
-                    },
-                    { error ->
-                        Log.e(TAG, error.toString())
+                    }
+
+                    override fun onFailure(call: Call<Any>, t: Throwable) {
+                        val error = t.message.toString()
+                        Log.e(TAG, error)
 
                         val message = "${getString(R.string.generic_error)}: $error"
                         textviewResponse.text = message
@@ -142,28 +165,9 @@ class SendToActivity : AppCompatActivity() {
 
                         buttonSend.visibility = View.VISIBLE
                         progressBarSending.visibility = View.INVISIBLE
-                    }) {
-                    override fun getHeaders(): MutableMap<String, String> {
-                        val headers = HashMap<String, String>()
-                        headers["api-key"] = connection.apiKey
-                        return headers
                     }
-
-                    override fun getByteData(): MutableMap<String, FileDataPart> {
-                        val params = HashMap<String, FileDataPart>()
-                        params["file"] = FileDataPart(filename, bytes, mimeType)
-                        return params
-                    }
-                }.also { request: VolleyFileUploadRequest ->
-                    request.retryPolicy = DefaultRetryPolicy(
-                        60000,
-                        DEFAULT_MAX_RETRIES,
-                        DEFAULT_BACKOFF_MULT
-                    )
-                }
-
-                // Add the request to the RequestQueue.
-                queue.add(request)
+                })
+                
             }
         }
 
