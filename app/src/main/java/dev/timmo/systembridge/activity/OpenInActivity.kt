@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.*
 import dev.timmo.systembridge.data.bridge.Endpoints
-import dev.timmo.systembridge.data.bridge.Open
+import dev.timmo.systembridge.data.bridge.SystemBridgeOpen
 import dev.timmo.systembridge.shared.ServiceBuilder
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -76,12 +76,12 @@ class OpenInActivity : AppCompatActivity() {
                     "http://${connection.host}:${connection.apiPort}",
                     Endpoints::class.java
                 )
-                val call = request.postOpen(connection.apiKey, Open(this.url))
+                val call = request.postOpen(connection.apiKey, SystemBridgeOpen(this.url))
 
-                call.enqueue(object : Callback<Open> {
+                call.enqueue(object : Callback<SystemBridgeOpen> {
                     override fun onResponse(
-                        call: Call<Open>,
-                        response: Response<Open>,
+                        call: Call<SystemBridgeOpen>,
+                        response: Response<SystemBridgeOpen>,
                     ) {
                         Log.v(TAG, response.toString())
 
@@ -92,7 +92,7 @@ class OpenInActivity : AppCompatActivity() {
                         progressBarSending.visibility = INVISIBLE
                     }
 
-                    override fun onFailure(call: Call<Open>, t: Throwable) {
+                    override fun onFailure(call: Call<SystemBridgeOpen>, t: Throwable) {
                         val error = t.message.toString()
                         Log.e(TAG, error)
 
