@@ -7,9 +7,9 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface Endpoints {
-    @GET("/information")
+    @GET("/api/data/system")
     fun getInformation(@Header("api-key") apiKey: String): Call<Information>
 
-    @POST("/open")
+    @POST("/api/open")
     fun postOpen(@Header("api-key") apiKey: String, @Body data: Open): Call<Open>
 }
