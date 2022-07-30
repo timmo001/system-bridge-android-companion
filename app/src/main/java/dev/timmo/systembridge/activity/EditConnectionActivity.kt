@@ -25,7 +25,7 @@ import dev.timmo.systembridge.shared.Constants.SETUP_EDIT
 import dev.timmo.systembridge.R
 import dev.timmo.systembridge.data.*
 import dev.timmo.systembridge.data.bridge.Endpoints
-import dev.timmo.systembridge.data.bridge.Information
+import dev.timmo.systembridge.data.bridge.SystemBridgeSystem
 import dev.timmo.systembridge.shared.ServiceBuilder
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -152,10 +152,10 @@ class EditConnectionActivity : AppCompatActivity() {
             "http://${connection.host}:${connection.apiPort}",
             Endpoints::class.java
         )
-        val call = request.getInformation(connection.apiKey)
+        val call = request.getSystem(connection.apiKey)
 
-        call.enqueue(object : Callback<Information> {
-            override fun onResponse(call: Call<Information>, response: Response<Information>) {
+        call.enqueue(object : Callback<SystemBridgeSystem> {
+            override fun onResponse(call: Call<SystemBridgeSystem>, response: Response<SystemBridgeSystem>) {
                 Log.d(TAG, response.toString())
 
                 textViewTestConnection.setText(R.string.generic_success)
@@ -171,7 +171,7 @@ class EditConnectionActivity : AppCompatActivity() {
                 progressBarSaving.visibility = INVISIBLE
             }
 
-            override fun onFailure(call: Call<Information>, t: Throwable) {
+            override fun onFailure(call: Call<SystemBridgeSystem>, t: Throwable) {
                 val error = t.message.toString()
                 Log.e(TAG, error)
 
