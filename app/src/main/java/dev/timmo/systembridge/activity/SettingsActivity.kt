@@ -229,7 +229,7 @@ class SettingsActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "SettingsActivity"
-        private const val SERVICE_TYPE = "_system-bridge._udp."
+        private const val SERVICE_TYPE = "_system-bridge._tcp."
         private const val SERVICE_PREFIX = "System Bridge"
     }
 
