@@ -28,4 +28,5 @@ jobs:
       SIGN_KEY: ${{ secrets.SIGN_KEY }}
       STORE_KEY_PASSWORD: ${{ secrets.STORE_KEY_PASSWORD }}
     with:
+      code-path: .
       package-name: dev.timmo.systembridge
