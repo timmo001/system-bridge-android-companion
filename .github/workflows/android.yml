@@ -21,3 +21,5 @@ concurrency:
 jobs:
   build-android:
     uses: timmo001/workflows/.github/workflows/build-android.yml@master
+    with:
+      package-name: dev.timmo.systembridge
