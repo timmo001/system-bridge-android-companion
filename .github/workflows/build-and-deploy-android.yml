@@ -21,5 +21,11 @@ concurrency:
 jobs:
   build-and-deploy-android:
     uses: timmo001/workflows/.github/workflows/build-and-deploy-android.yml@master
+    secrets:
+      ALIAS: ${{ secrets.ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+      SIGN_KEY: ${{ secrets.SIGN_KEY }}
+      STORE_KEY_PASSWORD: ${{ secrets.STORE_KEY_PASSWORD }}
     with:
       package-name: dev.timmo.systembridge
