@@ -1,4 +1,4 @@
-name: Android CI
+name: Android - Build and Deploy
 
 on:
   push:
@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-android:
-    uses: timmo001/workflows/.github/workflows/build-android.yml@master
+  build-and-deploy-android:
+    uses: timmo001/workflows/.github/workflows/build-and-deploy-android.yml@master
     with:
       package-name: dev.timmo.systembridge
