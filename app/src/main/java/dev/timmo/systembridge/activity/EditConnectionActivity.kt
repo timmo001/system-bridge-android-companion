@@ -12,7 +12,9 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.core.widget.addTextChangedListener
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dev.timmo.systembridge.shared.Constants.CONNECTION_API_KEY
@@ -52,8 +54,11 @@ class EditConnectionActivity : AppCompatActivity() {
     private lateinit var textViewTestConnectionOriginalColor: ColorStateList
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_edit_connection)
+        setSupportActionBar(findViewById<MaterialToolbar>(R.id.toolbar))
 
         val buttonDeleteBridge = findViewById<Button>(R.id.buttonDeleteBridge)
         buttonSave = findViewById(R.id.buttonSetupBridge)

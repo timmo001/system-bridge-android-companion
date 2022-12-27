@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/WelcomeFragment">
+
+    <fragment
+        android:id="@+id/WelcomeFragment"
+        android:name="dev.timmo.systembridge.fragment.WelcomeFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_welcome">
+
+        <action
+            android:id="@+id/action_WelcomeFragment_to_SettingsFragment"
+            app:destination="@id/SettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="dev.timmo.systembridge.fragment.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_SettingsFragment_to_editConnectionActivity"
+            app:destination="@id/editConnectionActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/editConnectionActivity"
+        android:name="dev.timmo.systembridge.activity.EditConnectionActivity"
+        android:label="activity_edit_connection"
+        tools:layout="@layout/activity_edit_connection" />
+</navigation>
