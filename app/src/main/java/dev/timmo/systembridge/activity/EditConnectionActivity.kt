@@ -23,7 +23,8 @@ import dev.timmo.systembridge.shared.Constants.CONNECTION_UID
 import dev.timmo.systembridge.shared.Constants.DEFAULT_API_PORT
 import dev.timmo.systembridge.shared.Constants.SETUP_EDIT
 import dev.timmo.systembridge.R
-import dev.timmo.systembridge.data.*
+import dev.timmo.systembridge.data.AppDatabase
+import dev.timmo.systembridge.data.Connection
 import dev.timmo.systembridge.data.bridge.Endpoints
 import dev.timmo.systembridge.data.bridge.SystemBridgeSystem
 import dev.timmo.systembridge.shared.ServiceBuilder

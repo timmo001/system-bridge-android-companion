@@ -14,7 +14,8 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
 import dev.timmo.systembridge.R
-import dev.timmo.systembridge.data.*
+import dev.timmo.systembridge.data.AppDatabase
+import dev.timmo.systembridge.data.Connection
 import dev.timmo.systembridge.data.bridge.Endpoints
 import dev.timmo.systembridge.data.bridge.SystemBridgeOpen
 import dev.timmo.systembridge.shared.ServiceBuilder
