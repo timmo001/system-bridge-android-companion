@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace 'dev.timmo.systembridge'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "dev.timmo.systembridge"
@@ -16,7 +16,7 @@ android {
         versionName '3.0.0'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        targetSdkVersion 33
+        targetSdk 34
         minSdkVersion 24
     }
 
@@ -32,8 +32,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
         jvmTarget = '11'
@@ -41,27 +41,27 @@ android {
     buildFeatures {
         viewBinding true
     }
-    buildToolsVersion '33.0.1'
+    buildToolsVersion '34.0.0'
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.room:room-ktx:2.4.3'
-    implementation 'androidx.room:room-runtime:2.4.3'
-    implementation 'androidx.work:work-runtime-ktx:2.7.1'
-    implementation 'androidx.work:work-runtime:2.7.1'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.room:room-ktx:2.6.0'
+    implementation 'androidx.room:room-runtime:2.6.0'
+    implementation 'androidx.work:work-runtime-ktx:2.8.1'
+    implementation 'androidx.work:work-runtime:2.8.1'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'com.google.code.gson:gson:2.10'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.11'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    testImplementation 'androidx.room:room-testing:2.4.3'
-    testImplementation 'androidx.work:work-testing:2.7.1'
+    testImplementation 'androidx.room:room-testing:2.6.0'
+    testImplementation 'androidx.work:work-testing:2.8.1'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    annotationProcessor 'androidx.room:room-compiler:2.4.3'
-    kapt('androidx.room:room-compiler:2.4.3')
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    annotationProcessor 'androidx.room:room-compiler:2.6.0'
+    kapt('androidx.room:room-compiler:2.6.0')
 }
