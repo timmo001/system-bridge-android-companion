@@ -77,7 +77,7 @@ class OpenInActivity : AppCompatActivity() {
                     "http://${connection.host}:${connection.apiPort}",
                     Endpoints::class.java
                 )
-                val call = request.postOpen(connection.apiKey, SystemBridgeOpen(this.url))
+                val call = request.postOpen(connection.token, SystemBridgeOpen(this.url))
 
                 call.enqueue(object : Callback<SystemBridgeOpen> {
                     override fun onResponse(

@@ -14,7 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import dev.timmo.systembridge.shared.Constants.CONNECTION_API_KEY
+import dev.timmo.systembridge.shared.Constants.CONNECTION_TOKEN
 import dev.timmo.systembridge.shared.Constants.CONNECTION_API_PORT
 import dev.timmo.systembridge.shared.Constants.CONNECTION_HOST
 import dev.timmo.systembridge.shared.Constants.CONNECTION_NAME
@@ -119,15 +119,15 @@ class SettingsActivity : AppCompatActivity() {
             intentSetupActivity.putExtra(CONNECTION_HOST, connectionDiscoveredData[position].host)
             intentSetupActivity.putExtra(CONNECTION_API_PORT,
                 connectionDiscoveredData[position].apiPort)
-            intentSetupActivity.putExtra(CONNECTION_API_KEY,
-                connectionDiscoveredData[position].apiKey)
+            intentSetupActivity.putExtra(CONNECTION_TOKEN,
+                connectionDiscoveredData[position].token)
         } else {
             intentSetupActivity.putExtra(SETUP_EDIT, true)
             intentSetupActivity.putExtra(CONNECTION_UID, connectionData[position].uid)
             intentSetupActivity.putExtra(CONNECTION_NAME, connectionData[position].name)
             intentSetupActivity.putExtra(CONNECTION_HOST, connectionData[position].host)
             intentSetupActivity.putExtra(CONNECTION_API_PORT, connectionData[position].apiPort)
-            intentSetupActivity.putExtra(CONNECTION_API_KEY, connectionData[position].apiKey)
+            intentSetupActivity.putExtra(CONNECTION_TOKEN, connectionData[position].token)
         }
 
         startActivity(intentSetupActivity)

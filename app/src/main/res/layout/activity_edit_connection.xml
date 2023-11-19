@@ -99,13 +99,13 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/editTextApiKeyLayout"
+        android:id="@+id/editTextTokenLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:hint="@string/api_key"
+        android:hint="@string/token"
         app:boxBackgroundColor="@android:color/transparent"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -113,7 +113,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextApiPortLayout">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextApiKey"
+            android:id="@+id/editTextToken"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -135,7 +135,7 @@
         android:text="@string/add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextApiKeyLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextTokenLayout" />
 
     <ProgressBar
         android:id="@+id/progressBarSaving"
@@ -146,7 +146,7 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextApiKeyLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextTokenLayout" />
 
     <Button
         android:id="@+id/buttonDeleteBridge"

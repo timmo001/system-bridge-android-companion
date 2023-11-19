@@ -3,7 +3,7 @@
     <string name="activity_open_url">Open URL on Bridge</string>
     <string name="add_bridge">Add Bridge</string>
     <string name="add">Add</string>
-    <string name="api_key">API Key</string>
+    <string name="token">Token</string>
     <string name="api_port">API Port</string>
     <string name="bridges_discovered">Discovered Bridges</string>
     <string name="bridges">Bridges</string>

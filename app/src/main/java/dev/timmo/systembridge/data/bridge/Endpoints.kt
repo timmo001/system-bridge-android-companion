@@ -8,8 +8,8 @@ import retrofit2.http.POST
 
 interface Endpoints {
     @GET("/api/data/system")
-    fun getSystem(@Header("api-key") apiKey: String): Call<SystemBridgeSystem>
+    fun getSystem(@Header("api-key") token: String): Call<SystemBridgeSystem>
 
     @POST("/api/open")
-    fun postOpen(@Header("api-key") apiKey: String, @Body data: SystemBridgeOpen): Call<SystemBridgeOpen>
+    fun postOpen(@Header("api-key") token: String, @Body data: SystemBridgeOpen): Call<SystemBridgeOpen>
 }

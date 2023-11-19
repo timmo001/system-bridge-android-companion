@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import dev.timmo.systembridge.shared.Constants.CONNECTION_API_KEY
+import dev.timmo.systembridge.shared.Constants.CONNECTION_TOKEN
 import dev.timmo.systembridge.shared.Constants.CONNECTION_API_PORT
 import dev.timmo.systembridge.shared.Constants.CONNECTION_HOST
 import dev.timmo.systembridge.shared.Constants.CONNECTION_NAME
@@ -39,8 +39,8 @@ import retrofit2.Response
 @DelicateCoroutinesApi
 class EditConnectionActivity : AppCompatActivity() {
     private lateinit var buttonSave: Button
-    private lateinit var editTextApiKey: TextInputEditText
-    private lateinit var editTextApiKeyLayout: TextInputLayout
+    private lateinit var editTextToken: TextInputEditText
+    private lateinit var editTextTokenLayout: TextInputLayout
     private lateinit var editTextApiPort: TextInputEditText
     private lateinit var editTextApiPortLayout: TextInputLayout
     private lateinit var editTextHost: TextInputEditText
@@ -57,8 +57,8 @@ class EditConnectionActivity : AppCompatActivity() {
 
         val buttonDeleteBridge = findViewById<Button>(R.id.buttonDeleteBridge)
         buttonSave = findViewById(R.id.buttonSetupBridge)
-        editTextApiKey = findViewById(R.id.editTextApiKey)
-        editTextApiKeyLayout = findViewById(R.id.editTextApiKeyLayout)
+        editTextToken = findViewById(R.id.editTextToken)
+        editTextTokenLayout = findViewById(R.id.editTextTokenLayout)
         editTextApiPort = findViewById(R.id.editTextApiPort)
         editTextApiPortLayout = findViewById(R.id.editTextApiPortLayout)
         editTextHost = findViewById(R.id.editTextHost)
@@ -82,7 +82,7 @@ class EditConnectionActivity : AppCompatActivity() {
         if (edit) {
             findViewById<TextView>(R.id.textViewSetupBridge).setText(R.string.edit_bridge)
             buttonSave.setText(R.string.save)
-            editTextApiKey.setText(intent.getStringExtra(CONNECTION_API_KEY))
+            editTextToken.setText(intent.getStringExtra(CONNECTION_TOKEN))
         } else {
             buttonDeleteBridge.isEnabled = false
             buttonDeleteBridge.visibility = GONE
@@ -98,13 +98,13 @@ class EditConnectionActivity : AppCompatActivity() {
             val name = editTextName.text.toString()
             val host = editTextHost.text.toString()
             val apiPort = editTextApiPort.text.toString().toInt()
-            val apiKey = editTextApiKey.text.toString()
+            val token = editTextToken.text.toString()
 
             buttonSave.visibility = INVISIBLE
             progressBarSaving.visibility = VISIBLE
             textViewTestConnection.setText(R.string.test_connection_in_progress)
 
-            val connection = Connection(uid, name, "", host, apiPort, apiKey)
+            val connection = Connection(uid, name, "", host, apiPort, token)
             Log.d(TAG, connection.toString())
 
             testConnection(edit, connection)
@@ -114,7 +114,7 @@ class EditConnectionActivity : AppCompatActivity() {
         editTextName.addTextChangedListener { validateInput() }
         editTextHost.addTextChangedListener { validateInput() }
         editTextApiPort.addTextChangedListener { validateInput() }
-        editTextApiKey.addTextChangedListener { validateInput() }
+        editTextToken.addTextChangedListener { validateInput() }
 
         validateInput()
     }
@@ -136,11 +136,11 @@ class EditConnectionActivity : AppCompatActivity() {
                 "${getString(R.string.validation_error_a)} ${getString(R.string.api_port)}"
             saveEnabled = false
         } else editTextApiPortLayout.error = null
-        if (editTextApiKey.text.isNullOrBlank()) {
-            editTextApiKeyLayout.error =
-                "${getString(R.string.validation_error_an)} ${getString(R.string.api_key)}"
+        if (editTextToken.text.isNullOrBlank()) {
+            editTextTokenLayout.error =
+                "${getString(R.string.validation_error_an)} ${getString(R.string.token)}"
             saveEnabled = false
-        } else editTextApiKeyLayout.error = null
+        } else editTextTokenLayout.error = null
 
         buttonSave.isEnabled = saveEnabled
     }
@@ -153,7 +153,7 @@ class EditConnectionActivity : AppCompatActivity() {
             "http://${connection.host}:${connection.apiPort}",
             Endpoints::class.java
         )
-        val call = request.getSystem(connection.apiKey)
+        val call = request.getSystem(connection.token)
 
         call.enqueue(object : Callback<SystemBridgeSystem> {
             override fun onResponse(call: Call<SystemBridgeSystem>, response: Response<SystemBridgeSystem>) {
