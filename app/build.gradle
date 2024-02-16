@@ -57,7 +57,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.11'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    testImplementation 'androidx.room:room-testing:2.6.0'
+    testImplementation 'androidx.room:room-testing:2.6.1'
     testImplementation 'androidx.work:work-testing:2.8.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
